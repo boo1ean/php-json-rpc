@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-activerecord/php-activerecord": "dev-master",
+        "phpunit/phpunit": "3.7.19"
+    }
+}
