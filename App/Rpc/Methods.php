@@ -2,7 +2,7 @@
 namespace App\Rpc;
 class Methods
 {
-    public function foo() {
-        return 'Hey!';
+    public function login() {
+
     }
 }
