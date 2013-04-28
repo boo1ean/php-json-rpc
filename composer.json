@@ -3,6 +3,10 @@
         "php-activerecord/php-activerecord": "dev-master",
         "evilscott/junior": "dev-master",
         "symfony/class-loader": "2.3.*@dev",
+        "zendframework/zend-authentication": "2.1.5",
+        "zendframework/zend-session": "2.1.5",
+        "zendframework/zend-eventmanager": "2.1.5",
+        "pimple/pimple": "1.0.*@dev",
         "phpunit/phpunit": "3.7.19"
     }
 }
