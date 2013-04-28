@@ -8,4 +8,10 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 require_once BASE_PATH . '/vendor/autoload.php';
-require_once APP_PATH  . '/bootstrap.php';
+
+$loader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
+$loader->useIncludePath(true);
+$loader->register();
+
+$app = new App\Application;
+$app->run();
