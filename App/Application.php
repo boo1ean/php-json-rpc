@@ -3,19 +3,35 @@ namespace App;
 
 class Application
 {
+    /**
+     * Config array
+     */
+    protected $config;
+
+    /**
+     * @param array config application config array
+     * @return void
+     */
+    public function __construct($config) {
+        $this->config = $config;
+    }
+
+    /**
+     * Run application
+     * @return void
+     */
     public function run() {
-        $this->configure();
+        $this->setup();
         $server = new \Junior\Server(new \App\Rpc\Methods());
         $server->process();
     }
 
-    protected function configure() {
-        $connections = array(
-            'development' => 'mysql://car_business:car_business@localhost/car_business',
-            'test'        => 'mysql://car_business:car_business@localhost/car_business',
-            'production'  => 'mysql://car_business:car_business@localhost/car_business'
-        );
-
+    /**
+     * Setup db and stuff
+     * @return void
+     */
+    protected function setup() {
+        $connections = $this->config['db']['connections'];
         \ActiveRecord\Config::initialize(function($cfg) use ($connections) {
             $cfg->set_model_directory(APP_PATH . '/models');
             $cfg->set_connections($connections);

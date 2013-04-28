@@ -9,9 +9,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 require_once BASE_PATH . '/vendor/autoload.php';
 
+// Setup autoloader
 $loader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
 $loader->useIncludePath(true);
 $loader->register();
 
-$app = new App\Application;
+// Setup and run application
+$config = require APP_PATH . '/config.php';
+$app    = new App\Application($config);
 $app->run();
