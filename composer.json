@@ -1,6 +1,8 @@
 {
     "require": {
         "php-activerecord/php-activerecord": "dev-master",
+        "evilscott/junior": "dev-master",
+        "symfony/class-loader": "2.3.*@dev",
         "phpunit/phpunit": "3.7.19"
     }
 }

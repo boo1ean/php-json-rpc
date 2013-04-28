@@ -3,20 +3,68 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b028f534189781e7a24183e6e6918d13",
+    "hash": "3a38236cc9ee341f26cff56eb2d2eb1a",
     "packages": [
+        {
+            "name": "evilscott/junior",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EvilScott/junior.git",
+                "reference": "v1.1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EvilScott/junior/zipball/v1.1.2",
+                "reference": "v1.1.2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "jimbojsb/spray": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Junior": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Butts",
+                    "email": "josh@joshbutts.com",
+                    "role": "developer"
+                },
+                {
+                    "name": "Chris Kite",
+                    "email": "chris@chriskite.com",
+                    "role": "developer"
+                },
+                {
+                    "name": "Scott Reis",
+                    "email": "reis.robert.s@gmail.com",
+                    "role": "lead developer"
+                }
+            ],
+            "description": "JSONRPC 2.0 Client and Server",
+            "time": "2013-04-09 21:33:23"
+        },
         {
             "name": "php-activerecord/php-activerecord",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kla/php-activerecord.git",
-                "reference": "980829bb319d60e9152d3e657b553795ff25c1ad"
+                "reference": "v1.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kla/php-activerecord/zipball/980829bb319d60e9152d3e657b553795ff25c1ad",
-                "reference": "980829bb319d60e9152d3e657b553795ff25c1ad",
+                "url": "https://api.github.com/repos/kla/php-activerecord/zipball/v1.1.2",
+                "reference": "v1.1.2",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +86,7 @@
                 "activerecord",
                 "orm"
             ],
-            "time": "2013-04-25 01:44:39"
+            "time": "2013-04-26 21:01:08"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -395,6 +443,56 @@
             "time": "2013-01-13 10:24:48"
         },
         {
+            "name": "symfony/class-loader",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/ClassLoader",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ClassLoader.git",
+                "reference": "c3d6ca422077edd10644328b1e6fefd294a6a123"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/c3d6ca422077edd10644328b1e6fefd294a6a123",
+                "reference": "c3d6ca422077edd10644328b1e6fefd294a6a123",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/finder": ">=2.0,<3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\ClassLoader\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony ClassLoader Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-04-26 08:12:31"
+        },
+        {
             "name": "symfony/yaml",
             "version": "v2.2.1",
             "target-dir": "Symfony/Component/Yaml",
@@ -450,7 +548,9 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "php-activerecord/php-activerecord": 20
+        "php-activerecord/php-activerecord": 20,
+        "evilscott/junior": 20,
+        "symfony/class-loader": 20
     },
     "platform": [
 
