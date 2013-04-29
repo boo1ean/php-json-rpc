@@ -2,6 +2,8 @@
 class TestCase extends PHPUnit_Framework_TestCase
 {
     protected $app;
+    protected $container;
+
     function __construct() {
         parent::__construct();
 
@@ -14,5 +16,6 @@ class TestCase extends PHPUnit_Framework_TestCase
         $config    = require APP_PATH . '/config.php';
         $this->app = new App\Application($config);
         $this->app->setup();
+        $this->container = $this->app->getContainer();
     }
 }

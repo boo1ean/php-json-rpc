@@ -12,7 +12,7 @@
 
     <testsuites>
         <testsuite name="Rpc Methods">
-            <directory suffix=".php">Methods</directory>
+            <directory suffix=".php">Rpc</directory>
         </testsuite>
     </testsuites>
 </phpunit>
