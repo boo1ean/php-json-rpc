@@ -4,6 +4,7 @@ namespace App\Ext\Zend\Auth;
 
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
+use App\Model\User;
 
 class Adapter implements AdapterInterface
 {
@@ -41,6 +42,14 @@ class Adapter implements AdapterInterface
      *               If authentication cannot be performed
      */
     public function authenticate() {
-        return new Result(Result::SUCCESS, $this->email);
+        $identity = User::first(array(
+            'email'    => $this->email,
+            'password' => User::encrypt($this->password)
+        ));
+
+        $status = $identity ? Result::SUCCESS
+                            : Result::FAILURE_CREDENTIAL_INVALID;
+
+        return new Result($status, $identity);
     }
 }

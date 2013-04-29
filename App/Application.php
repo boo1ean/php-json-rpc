@@ -54,7 +54,7 @@ class Application
     protected function setupDb() {
         $connections = $this->config['db']['connections'];
         \ActiveRecord\Config::initialize(function($cfg) use ($connections) {
-            $cfg->set_model_directory(APP_PATH . '/models');
+            $cfg->set_model_directory(APP_PATH . '/Model');
             $cfg->set_connections($connections);
         });
     }
