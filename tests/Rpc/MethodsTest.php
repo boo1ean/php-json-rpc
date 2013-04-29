@@ -1,5 +1,6 @@
 <?php
 
+use \App\Model\User;
 class MethodsTest extends TestCase
 {
     protected $server;
@@ -17,12 +18,15 @@ class MethodsTest extends TestCase
     }
 
     public function testLogin() {
+        $params = array(
+            'email'    => 'email@example.com',
+            'password' => 'custom-pwd'
+        );
+
+        User::create($params);
         $request = $this->composeRequest(array(
             'method' => 'login',
-            'params' => array(
-                'email'    => 'address@example.com',
-                'password' => 'custom-pwd'
-            )
+            'params' => $params
         ));
 
         $response = $this->server->handleRequest($request);
@@ -32,6 +36,9 @@ class MethodsTest extends TestCase
         $this->assertNotEmpty($response);
         $this->assertNotEmpty($response->result);
         $this->assertEquals($request->id, $response->id);
+
+        $user = $this->container['user'];
+        $this->assertEquals($user->email, $params['email']);
     }
 
     public function testComposeRequestHelper() {
