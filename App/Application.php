@@ -22,12 +22,11 @@ class Application
     }
 
     /**
-     * Run application
-     * @return void
+     * Run JSON-RPC 2.0 application
+     * @return \App\Application
      */
-    public function run() {
-        $server = new \Junior\Server(new \App\Rpc\Methods($this->container));
-        $server->process();
+    public function runRPC() {
+        $this->container['json-rpc-server']->process();
         return $this;
     }
 
@@ -39,6 +38,14 @@ class Application
         $this->setupDb();
         $this->setupContainer();
         return $this;
+    }
+
+    /**
+     * Get DI container
+     * @return Pimple di container
+     */
+    public function getContainer() {
+        return $this->container;
     }
 
     /**
@@ -57,6 +64,12 @@ class Application
      */
     protected function setupContainer() {
         $this->container = new \Pimple();
+
+        $this->container['config'] = $this->config;
+
+        $this->container['json-rpc-server'] = $this->container->share(function($c) {
+            return new \Junior\Server(new \App\Rpc\Methods($c));
+        });
 
         $this->container['auth-storage'] = function($c) {
             return new \Zend\Authentication\Storage\Session();

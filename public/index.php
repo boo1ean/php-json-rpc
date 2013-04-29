@@ -19,4 +19,4 @@ $config = require APP_PATH . '/config.php';
 $app    = new App\Application($config);
 
 $app->setup()
-    ->run();
+    ->runRPC();
