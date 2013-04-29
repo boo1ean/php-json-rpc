@@ -15,17 +15,15 @@ class User extends Service
      * @return void 
      */
     public function login($identity, $password) {
-        $auth        = new AuthenticationService();
-        $authAdapter = new AuthAdapter($identity, $password);
-        $result      = $auth->authenticate($authAdapter);
+        $auth    = $this->container['auth-service'];
+        $adapter = $auth->getAdapter();
+        $adapter->setCredentials($identity, $password);
+        $result  = $auth->authenticate();
 
         if (!$result->isValid()) {
-            // Authentication failed; print the reasons why
-            foreach ($result->getMessages() as $message) {
-
-            }
+            return $result->getMessages();
         } else {
-
+            return 'Successfully logged in as ' . $identity;
         }
     }
 }

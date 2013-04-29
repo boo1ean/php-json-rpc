@@ -13,9 +13,22 @@ class Adapter implements AdapterInterface
     /**
      * Sets email and password for authentication
      *
+     * @param string $email
+     * @param string $password
      * @return void
      */
-    public function __construct($email, $password) {
+    public function __construct($email = '', $password = '') {
+        $this->setCredentials($email, $password);
+    }
+
+    /**
+     * Set auth credentials
+     *
+     * @param string $email
+     * @param string $password
+     * @return void
+     */
+    public function setCredentials($email, $password) {
         $this->email    = $email;
         $this->password = $password;
     }
@@ -28,6 +41,6 @@ class Adapter implements AdapterInterface
      *               If authentication cannot be performed
      */
     public function authenticate() {
-        return new Result(Result::SUCCESS, $email);
+        return new Result(Result::SUCCESS, $this->email);
     }
 }

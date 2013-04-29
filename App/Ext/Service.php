@@ -6,15 +6,15 @@ namespace App\Ext;
  */
 class Service
 {
-    protected $context;
+    protected $container;
 
     /**
      * Initialize service dependencies
      *
-     * @param mixed $context application context container
+     * @param mixed $container application DI container
      * @return void
      */
-    public function __construct($context) {
-        $this->context = $context;
+    public function __construct($container) {
+        $this->container = $container;
     }
 }

@@ -56,5 +56,25 @@ class Application
      */
     protected function setupContainer() {
         $this->container = new \Pimple();
+
+        $this->container['auth-storage'] = function($c) {
+            return new \Zend\Authentication\Storage\Session();
+        };
+
+        $this->container['auth-adapter'] = function($c) {
+            return new \App\Ext\Zend\Auth\Adapter();
+        };
+
+        $this->container['auth-service'] = $this->container->share(function($c) {
+            return new \Zend\Authentication\AuthenticationService($c['auth-storage'], $c['auth-adapter']);
+        });
+
+        $this->container['user'] = $this->container->share(function($c) {
+            return $c['auth-service']->getIdentity();
+        });
+
+        $this->container['user-service'] = $this->container->share(function($c) {
+            return new \App\Service\User($c);
+        });
     }
 }
