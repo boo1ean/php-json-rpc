@@ -16,6 +16,24 @@ class MethodsTest extends TestCase
 
     }
 
+    public function testLogin() {
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => array(
+                'email'    => 'address@example.com',
+                'password' => 'custom-pwd'
+            )
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $this->assertNotEmpty($response);
+
+        $response = json_decode($response);
+        $this->assertNotEmpty($response);
+        $this->assertNotEmpty($response->result);
+        $this->assertEquals($request->id, $response->id);
+    }
+
     public function testComposeRequestHelper() {
         $request = $this->composeRequest();
         $this->assertNotEmpty($request);
