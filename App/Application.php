@@ -26,18 +26,19 @@ class Application
      * @return void
      */
     public function run() {
-        $this->setup();
         $server = new \Junior\Server(new \App\Rpc\Methods($this->container));
         $server->process();
+        return $this;
     }
 
     /**
      * Setup application
      * @return void
      */
-    protected function setup() {
+    public function setup() {
         $this->setupDb();
         $this->setupContainer();
+        return $this;
     }
 
     /**
