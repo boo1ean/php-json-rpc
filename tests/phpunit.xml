@@ -14,5 +14,8 @@
         <testsuite name="Rpc Methods">
             <directory suffix=".php">Rpc</directory>
         </testsuite>
+        <testsuite name="Services">
+            <directory suffix=".php">Service</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

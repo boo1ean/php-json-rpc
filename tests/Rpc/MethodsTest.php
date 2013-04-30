@@ -1,6 +1,6 @@
 <?php
 
-use \App\Model\User;
+use App\Model\User;
 class MethodsTest extends TestCase
 {
     protected $server;

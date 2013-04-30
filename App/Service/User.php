@@ -23,7 +23,7 @@ class User extends Service
         if (!$result->isValid()) {
             return $result->getMessages();
         } else {
-            return 'Successfully logged in as ' . $identity;
+            return true;
         }
     }
 }

@@ -2,6 +2,11 @@
 namespace App\Model;
 class User extends \ActiveRecord\Model
 {
+    public static $validates_presence_of = array(
+        array('email'),
+        array('password')
+    );
+
     /**
      * Data encryption algorithm
      *
