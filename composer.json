@@ -7,6 +7,7 @@
         "zendframework/zend-session": "2.1.5",
         "zendframework/zend-eventmanager": "2.1.5",
         "pimple/pimple": "1.0.*@dev",
+        "fzaninotto/faker": "1.1.*@dev",
         "phpunit/phpunit": "3.7.19"
     }
 }

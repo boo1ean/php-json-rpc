@@ -14,27 +14,30 @@ GRANT ALL
     TO 'car_business'@'localhost';
 
 CREATE TABLE IF NOT EXISTS `users` (
-    `id`         INT(11)      AUTO_INCREMENT,
-    `email`      VARCHAR(80)  NOT NULL,
-    `password`   VARCHAR(45)  NOT NULL DEFAULT '',
-    `first_name` varchar(80) NULL DEFAULT '',
-    `last_name`  varchar(80) NULL DEFAULT '',
-    `country`    VARCHAR(45)  NOT NULL DEFAULT '',
-    `city`       VARCHAR(45)  NOT NULL DEFAULT '',
-    `address`    VARCHAR(255) NOT NULL DEFAULT '',
+    `id`           INT(11)      AUTO_INCREMENT,
+    `email`        VARCHAR(80)  NOT NULL,
+    `password`     VARCHAR(45)  NOT NULL DEFAULT '',
+    `first_name`   varchar(80)  NULL DEFAULT '',
+    `last_name`    varchar(80)  NULL DEFAULT '',
+    `phone_number` VARCHAR(45)  NOT NULL DEFAULT '',
+    `country`      VARCHAR(45)  NOT NULL DEFAULT '',
+    `city`         VARCHAR(45)  NOT NULL DEFAULT '',
+    `address`      VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `stores` (
-    `id`       INT(11)      NOT NULL AUTO_INCREMENT,
-    `owner_id` INT(11)      NOT NULL,
-    `name`     VARCHAR(255) NOT NULL DEFAULT '',
-    `country`  VARCHAR(80)  NOT NULL DEFAULT '',
-    `city`     VARCHAR(80)  NOT NULL DEFAULT '',
-    `address`  VARCHAR(255) NOT NULL,
+    `id`           INT(11)      NOT NULL AUTO_INCREMENT,
+    `user_id`      INT(11)      NOT NULL,
+    `name`         VARCHAR(255) NOT NULL DEFAULT '',
+    `description`  TEXT         NOT NULL DEFAULT '',
+    `phone_number` VARCHAR(45)  NOT NULL DEFAULT '',
+    `country`      VARCHAR(80)  NOT NULL DEFAULT '',
+    `city`         VARCHAR(80)  NOT NULL DEFAULT '',
+    `address`      VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `products` (

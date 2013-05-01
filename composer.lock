@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "3a3d7e2974a8f5b64b521f5eb35ec157",
+    "hash": "89daaf9fdf8f81bc4881d70fb1cc2063",
     "packages": [
         {
             "name": "evilscott/junior",
@@ -52,6 +52,51 @@
             ],
             "description": "JSONRPC 2.0 Client and Server",
             "time": "2013-04-09 21:33:23"
+        },
+        {
+            "name": "fzaninotto/faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "6108cba60e2bca334c5a0e4e70829562315c0287"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/6108cba60e2bca334c5a0e4e70829562315c0287",
+                "reference": "6108cba60e2bca334c5a0e4e70829562315c0287",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Faker": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2013-04-30 12:39:11"
         },
         {
             "name": "php-activerecord/php-activerecord",
@@ -774,7 +819,8 @@
         "php-activerecord/php-activerecord": 20,
         "evilscott/junior": 20,
         "symfony/class-loader": 20,
-        "pimple/pimple": 20
+        "pimple/pimple": 20,
+        "fzaninotto/faker": 20
     },
     "platform": [
 
