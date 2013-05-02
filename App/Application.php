@@ -68,8 +68,12 @@ class Application
 
         $this->container['config'] = $this->config;
 
+        $this->container['rpc-methods'] = function($c) {
+            return new \App\Rpc\Methods($c);
+        };
+
         $this->container['json-rpc-server'] = $this->container->share(function($c) {
-            return new \Junior\Server(new \App\Rpc\Methods($c));
+            return new \Junior\Server($c['rpc-methods']);
         });
 
         $this->container['auth-storage'] = function($c) {
