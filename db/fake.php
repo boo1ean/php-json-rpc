@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 use App\Model\User;
-use App\Model\Store;
+use App\Model\Business;
 use App\Model\Product;
 
 function logg($msg) {
@@ -31,9 +31,9 @@ $app->setup();
 $faker = Faker\Factory::create();
 
 $defaultPassword = 'test';
-$userCount       = 100;
-$storeCount      = 100;
-$productCount    = 50;
+$userCount       = 5;
+$businessCount   = 5;
+$productCount    = 5;
 $environment     = 'development';
 
 // Users
@@ -53,30 +53,30 @@ for ($i = 0; $i < $userCount; $i++) {
     logg("$user->email; $user->first_name $user->last_name");
 }
 
-// Stores
-logg("\n\nCreate stores");
+// businesses
+logg("\n\nCreate businesses");
 $users = User::all();
 $usersCount = count($users);
-for ($i = 0; $i < $storeCount; $i++) {
+for ($i = 0; $i < $businessCount; $i++) {
     $user = $users[mt_rand(0, $userCount - 1)];
-    $store = Store::create(array(
+    $business = business::create(array(
         'user_id'      => $user->id,
         'name'         => $faker->company,
         'phone_number' => $faker->phoneNumber
     ));
 
-    logg("$store->name; {$store->user->email}");
+    logg("$business->name; {$business->user->email}");
 }
 
 // Create products
 logg("\n\nCreate products");
-$stores = Store::all();
-$storesCount = count($stores);
-foreach ($stores as $store) {
-    logg("\n\nCreate products for $store->name");
+$businesses = business::all();
+$businessesCount = count($businesses);
+foreach ($businesses as $business) {
+    logg("\n\nCreate products for $business->name");
     for ($i = 0; $i < $productCount; ++$i) {
         $product = Product::create(array(
-            'store_id' => $store->id,
+            'business_id' => $business->id,
             'name'     => $faker->name
         ));
 

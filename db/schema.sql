@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
-CREATE TABLE IF NOT EXISTS `stores` (
+CREATE TABLE IF NOT EXISTS `businesses` (
     `id`           INT(11)      NOT NULL AUTO_INCREMENT,
     `user_id`      INT(11)      NOT NULL,
     `name`         VARCHAR(255) NOT NULL DEFAULT '',
@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS `stores` (
 
 CREATE TABLE IF NOT EXISTS `products` (
     `id`          INT(11)      NOT NULL AUTO_INCREMENT,
-    `store_id`    INT(11)      NOT NULL,
+    `business_id`    INT(11)      NOT NULL,
     `name`        VARCHAR(255) NOT NULL DEFAULT '',
     `description` TEXT         NOT NULL DEFAULT '',
     `photo`       VARCHAR(255),
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`store_id`) REFERENCES `stores`(`id`)
+    FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `bookings` (
@@ -71,11 +71,11 @@ CREATE TABLE IF NOT EXISTS `product_bookings` (
 
 CREATE TABLE IF NOT EXISTS `reviews` (
     `id`       INT(11)      NOT NULL AUTO_INCREMENT,
-    `store_id` INT(11)      NOT NULL,
+    `business_id` INT(11)      NOT NULL,
     `user_id`  INT(11)      NOT NULL,
     `title`    VARCHAR(255) NOT NULL DEFAULT '',
     `body`     TEXT         NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`store_id`) REFERENCES `stores`(`id`),
+    FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`),
     FOREIGN KEY (`user_id`)  REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
