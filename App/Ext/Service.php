@@ -6,12 +6,25 @@ namespace App\Ext;
  */
 class Service
 {
+    /**
+     * DI container
+     */
     protected $container;
+
+    /**
+     * Validation rules schema
+     * 
+     * @param string $name method name
+     * @return array validation rules
+     */
+    protected function validation($name) {
+        throw \LogicException('Service requires validation rules.');
+    }
 
     /**
      * Initialize service dependencies
      *
-     * @param mixed $container application DI container
+     * @param  mixed $container application DI container
      * @return void
      */
     public function __construct($container) {
@@ -21,12 +34,42 @@ class Service
     /**
      * Method call decoration
      *
-     * @param string $method name of called method
-     * @param array $params method arguments
-     * @return mixed result of meethod call
+     * @param  string $method name of called method
+     * @param  array  $params method arguments
+     * @return mixed  result of meethod call
      */
     public function __call($method, $params) {
         $p = $params[0];
+
+        if (!is_array($p)) {
+            $p = array();
+        }
+
+        $this->validate($method, $p);
         return call_user_method('_' . $method, $this, $p);
+    }
+
+    /**
+     * Retrives validation rules and applies it to method's params
+     *
+     * @param  sting $method name of method
+     * @param  array $params method params
+     * @return void
+     * @throws \Exception when validation fails
+     */
+    public function validate($method, $params) {
+        $rules = $this->validation($method);
+
+        foreach ($rules as $key => $rule) {
+            $value = '';
+            if (array_key_exists($key, $params)) {
+                $value = $params[$key];
+            }
+
+            $result = $rule->validate($value);
+            if (!$result) {
+                $rule->check($key);
+            }
+        }
     }
 }

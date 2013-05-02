@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "89daaf9fdf8f81bc4881d70fb1cc2063",
+    "hash": "ba262d2859cd91310834ddaae21b7729",
     "packages": [
         {
             "name": "evilscott/junior",
@@ -104,12 +104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kla/php-activerecord.git",
-                "reference": "567b4213b424e922a65fcd1f572fc3fc8decdf1e"
+                "reference": "f05d2680a012da96a0603c8cea503a1b9236cf9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kla/php-activerecord/zipball/567b4213b424e922a65fcd1f572fc3fc8decdf1e",
-                "reference": "567b4213b424e922a65fcd1f572fc3fc8decdf1e",
+                "url": "https://api.github.com/repos/kla/php-activerecord/zipball/f05d2680a012da96a0603c8cea503a1b9236cf9b",
+                "reference": "f05d2680a012da96a0603c8cea503a1b9236cf9b",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 "activerecord",
                 "orm"
             ],
-            "time": "2013-04-28 15:37:21"
+            "time": "2013-05-01 19:22:09"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -534,18 +534,126 @@
             "time": "2013-03-08 08:21:40"
         },
         {
+            "name": "respect/validation",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Respect/Validation.git",
+                "reference": "21ef9dae33f9c8bca1ad2bd4d703c356ae39a719"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/21ef9dae33f9c8bca1ad2bd4d703c356ae39a719",
+                "reference": "21ef9dae33f9c8bca1ad2bd4d703c356ae39a719",
+                "shasum": ""
+            },
+            "require-dev": {
+                "symfony/validator": "2.*",
+                "zendframework/zend-validator": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Respect\\Validation": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD Style"
+            ],
+            "authors": [
+                {
+                    "name": "Henrique Moody",
+                    "email": "henriquemoody@gmail.com",
+                    "homepage": "http://henriquemoody.com/"
+                },
+                {
+                    "name": "Alexandre Gaigalas",
+                    "email": "alexandre@gaigalas.net"
+                },
+                {
+                    "name": "Carlos André Ferrari",
+                    "email": "caferrari@gmail.com"
+                },
+                {
+                    "name": "Devin Torres",
+                    "email": "devin@devintorres.com"
+                },
+                {
+                    "name": "Emerson Carvalho",
+                    "email": "emerson.broga@gmail.com"
+                },
+                {
+                    "name": "Fábio da Silva Ribeiro",
+                    "email": "fabiorphp@gmail.com"
+                },
+                {
+                    "name": "Jair Henrique",
+                    "email": "jair.henrique@gmail.com"
+                },
+                {
+                    "name": "Jayson Reis",
+                    "email": "santosdosreis@gmail.com"
+                },
+                {
+                    "name": "Jean Pimentel",
+                    "email": "jeanfap@gmail.com"
+                },
+                {
+                    "name": "Kleber Hamada Sato",
+                    "email": "kleberhs007@yahoo.com"
+                },
+                {
+                    "name": "Leandro",
+                    "email": "lleitep3@gmail.com"
+                },
+                {
+                    "name": "Marcelo Araujo",
+                    "email": "msaraujo@php.net"
+                },
+                {
+                    "name": "Michael Klishin",
+                    "email": "michaelklishin@me.com"
+                },
+                {
+                    "name": "Morf",
+                    "email": "i@morfi.ru"
+                },
+                {
+                    "name": "Rogerio Prado de Jesus",
+                    "email": "rogeriopradoj@gmail.com"
+                },
+                {
+                    "name": "Torben Brodt",
+                    "email": "t.brodt@gmail.com"
+                },
+                {
+                    "name": "Kinn Coelho Julião",
+                    "email": "kinncj@gmail.com",
+                    "homepage": "http://kinncj.com.br",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Augusto Pascutti",
+                    "email": "augusto@phpsp.org.br"
+                }
+            ],
+            "description": "The most awesome validation engine ever created for PHP",
+            "time": "2013-04-30 17:13:14"
+        },
+        {
             "name": "symfony/class-loader",
             "version": "dev-master",
             "target-dir": "Symfony/Component/ClassLoader",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ClassLoader.git",
-                "reference": "c3d6ca422077edd10644328b1e6fefd294a6a123"
+                "reference": "v2.3.0-BETA1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/c3d6ca422077edd10644328b1e6fefd294a6a123",
-                "reference": "c3d6ca422077edd10644328b1e6fefd294a6a123",
+                "url": "https://api.github.com/repos/symfony/ClassLoader/zipball/v2.3.0-BETA1",
+                "reference": "v2.3.0-BETA1",
                 "shasum": ""
             },
             "require": {
@@ -820,7 +928,8 @@
         "evilscott/junior": 20,
         "symfony/class-loader": 20,
         "pimple/pimple": 20,
-        "fzaninotto/faker": 20
+        "fzaninotto/faker": 20,
+        "respect/validation": 20
     },
     "platform": [
 
