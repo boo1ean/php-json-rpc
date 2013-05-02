@@ -9,7 +9,12 @@ class Methods
     }
 
     public function login($params) {
-        return $this->container['user-service']->login($params);
+        $result = $this->container['user-service']->login($params);
+        if (!$result) {
+            throw new \Exception('Invalid email or password.');
+        }
+
+        return $result;
     }
 
     public function test() {

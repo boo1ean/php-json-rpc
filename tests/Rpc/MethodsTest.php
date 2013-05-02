@@ -12,15 +12,15 @@ class MethodsTest extends TestCase
             'jsonrpc' => '2.0',
             'method'  => 'login',
             'params'  => array(),
-            'id'      => uniqid()
+            'id'      => $this->faker->md5
         );
 
     }
 
     public function testLogin() {
         $params = array(
-            'email'    => 'email@example.com',
-            'password' => 'custom-pwd'
+            'email'    => $this->faker->email,
+            'password' => $this->faker->phoneNumber
         );
 
         User::create($params);
@@ -39,6 +39,49 @@ class MethodsTest extends TestCase
 
         $user = $this->container['user'];
         $this->assertEquals($user->email, $params['email']);
+    }
+
+    public function testInvalidLogin() {
+        $params = array(
+            'email'    => $this->faker->md5,
+            'password' => $this->faker->md5
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => $params
+        ));
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertObjectHasAttribute('error', $response);
+    }
+
+    public function testInvalidLoginParams() {
+        $params = array(
+            'email' => $this->faker->md5
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertObjectHasAttribute('error', $response);
+
+        $params = array(
+            'password' => $this->faker->md5
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertObjectHasAttribute('error', $response);
     }
 
     public function testComposeRequestHelper() {

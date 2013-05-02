@@ -33,10 +33,6 @@ class User extends Service
         $adapter->setCredentials($p['email'], $p['password']);
         $result  = $auth->authenticate();
 
-        if (!$result->isValid()) {
-            return $result->getMessages();
-        } else {
-            return true;
-        }
+        return $result->isValid();
     }
 }
