@@ -1,10 +1,7 @@
 <?php
 namespace App\Service;
 
-use Zend\Authentication\AuthenticationService;
-use App\Ext\Zend\Auth\Adapter as AuthAdapter;
 use App\Ext\Service;
-
 class User extends Service
 {
     /**
@@ -14,10 +11,10 @@ class User extends Service
      * @param string $password
      * @return void 
      */
-    public function login($identity, $password) {
+    protected function _login($p) {
         $auth    = $this->container['auth-service'];
         $adapter = $auth->getAdapter();
-        $adapter->setCredentials($identity, $password);
+        $adapter->setCredentials($p['email'], $p['password']);
         $result  = $auth->authenticate();
 
         if (!$result->isValid()) {

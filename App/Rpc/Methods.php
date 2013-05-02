@@ -9,7 +9,7 @@ class Methods
     }
 
     public function login($params) {
-        return $this->container['user-service']->login($params['email'], $params['password']);
+        return $this->container['user-service']->login($params);
     }
 
     public function test() {
