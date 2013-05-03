@@ -7,6 +7,10 @@ class User extends \ActiveRecord\Model
         array('password')
     );
 
+    public static $has_many = array(
+        array('businesses')
+    );
+
     /**
      * Data encryption algorithm
      *
