@@ -84,6 +84,45 @@ class MethodsTest extends TestCase
         $this->assertObjectHasAttribute('error', $response);
     }
 
+    public function testNoBusinesses() {
+        $request = $this->composeRequest(array(
+            'method' => 'businesses',
+            'params' => array(
+                'rpp'  => 20,
+                'page' => 1
+            )
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $result = json_decode($response->result);
+        $this->assertInternalType('array', $result);
+        $this->assertEmpty($result);
+    }
+
+    public function testBusinessesList() {
+        $count = 12;
+        $user = $this->createUser();
+        $this->createBusinesses($user->id, $count);
+
+        $request = $this->composeRequest(array(
+            'method' => 'businesses',
+            'params' => array(
+                'rpp'  => 20,
+                'page' => 1
+            )
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $result = json_decode($response->result);
+        $this->assertCount($count, $result);
+    }
+
     public function testComposeRequestHelper() {
         $request = $this->composeRequest();
         $this->assertNotEmpty($request);

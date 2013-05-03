@@ -8,7 +8,7 @@ class Methods
         $this->container = $container;
     }
 
-    public function login($p) {
+    public function login($p = array()) {
         $result = $this->container['user-service']->login($p);
         if (!$result) {
             throw new \Exception('Invalid email or password.');
@@ -17,7 +17,7 @@ class Methods
         return $this->container['user']->to_json();
     }
 
-    public function userBusinesses() {
+    public function userBusinesses($p = array()) {
         $user = $this->container['user']; 
 
         if (is_null($user)) {
@@ -31,7 +31,14 @@ class Methods
     /**
      * Get list of all businesses
      */
-    public function businesses($p) {
+    public function businesses($p = array()) {
+        $defaults = array(
+            'rpp' => 20,
+            'page' => 1
+        );
+
+        $p = array_merge($defaults, $p);
+
         $businesses = $this->container['business-service']->getBusinesses($p);
         return $this->json($businesses);
     }
@@ -41,7 +48,7 @@ class Methods
      *
      * @param integer $business_id
      **/
-    public function products($p) {
+    public function products($p = array()) {
         $products = $this->container['product-service']->getProducts($p);
         return $this->json($products);
     }

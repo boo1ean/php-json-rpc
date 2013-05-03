@@ -10,7 +10,7 @@ class Product extends Service
     public function validation() {
         return array(
             'getProducts' => array(
-                'business_id' => v::notEmpty()->numeric()->positive()
+                'business_id' => v::notEmpty()->int()->positive()
             )
         );
     }
