@@ -1,0 +1,14 @@
+{
+  "name": "car-booking",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "jquery-jsonrpc": "git://github.com/datagraph/jquery-jsonrpc.git",
+    "jquery": "~2.0.0",
+    "bootstrap": "~2.3.1"
+  }
+}
