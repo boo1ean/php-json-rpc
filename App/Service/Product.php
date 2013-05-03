@@ -3,6 +3,8 @@ namespace App\Service;
 
 use App\Ext\Service;
 use Respect\Validation\Validator as v;
+use App\Model\Product as Model;
+
 class Product extends Service
 {
     public function validation() {
@@ -20,7 +22,12 @@ class Product extends Service
      * @return array collection of product
      */
     protected function _getProducts($p) {
-        $products = Product::find('all', array('conditions' => 'business_id = ?', $p['business_id']));
+        $products = Model::find('all', array(
+            'conditions' => array(
+                'business_id = ?', $p['business_id']
+            )
+        ));
+
         return $products;
     }
 }
