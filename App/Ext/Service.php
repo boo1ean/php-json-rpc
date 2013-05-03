@@ -17,8 +17,8 @@ class Service
      * @param string $name method name
      * @return array validation rules
      */
-    protected function validation($name) {
-        throw \LogicException('Service requires validation rules.');
+    protected function validation() {
+        return array();
     }
 
     /**
@@ -38,14 +38,15 @@ class Service
      * @param  array  $params method arguments
      * @return mixed  result of meethod call
      */
-    public function __call($method, $params) {
-        $p = $params[0];
+    public function __call($method, $params = array()) {
+        $p = array_shift($params);
 
         if (!is_array($p)) {
             $p = array();
         }
 
         $this->validate($method, $p);
+
         return call_user_method('_' . $method, $this, $p);
     }
 
@@ -58,8 +59,13 @@ class Service
      * @throws \Exception when validation fails
      */
     public function validate($method, $params) {
-        $rules = $this->validation($method);
+        $rules = $this->validation();
 
+        if (empty($rules[$method])) {
+            return;
+        }
+
+        $rules = $rules[$method];
         foreach ($rules as $key => $rule) {
             $value = '';
             if (array_key_exists($key, $params)) {

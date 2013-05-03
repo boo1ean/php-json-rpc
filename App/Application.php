@@ -95,5 +95,13 @@ class Application
         $this->container['user-service'] = $this->container->share(function($c) {
             return new \App\Service\User($c);
         });
+
+        $this->container['business-service'] = $this->container->share(function($c) {
+            return new \App\Service\Business($c);
+        });
+
+        $this->container['product-service'] = $this->container->share(function($c) {
+            return new \App\Service\Product($c);
+        });
     }
 }
