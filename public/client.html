@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>JSON-RPC client</title>
+
+        <link href="/components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet">
+
+        <script type="text/javascript" src="/components/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="/components/underscore/underscore-min.js"></script>
+        <script type="text/javascript" src="/components/backbone/backbone-min.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>
+    </head>
+    <body>
+        <header class="subhead">
+          <div class="container">
+            <h1>JSON-RPC Test Console</h1>
+            <p class="lead">Here will be dragons.</p>
+          </div>
+        </header>
+
+        <div class="container">
+            <div class="row">
+                <div class="span3">
+                    <ul class="nav nav-list" id="methods-view"></ul>
+                </div>
+
+                <div class="span9" id="controls">
+                    <button class="btn btn-primary" id="send-request">Send</button>
+                </div>
+
+                <div class="row">
+                    <div class="span4">
+                        <div class="well" id="method-form-view">
+                        </div>
+                    </div>
+
+                    <div class="well span4" id="request-view"></div>
+                    <div class="well span4" id="response-view"></div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/template" id="method-list-item-template">
+            <a href="#<%= name %>"><i class="icon-chevron-right"></i> <%= name %></a>
+        </script>
+
+
+        <script type="text/template" id="method-form-template">
+            <% _.each(params, function(param){ %>
+                <div class="control-group">
+                    <div><%= param %></div>
+                    <input class="param-input input-block-level" type="text" id="<%= param %>" placeholder="<%= param %>">
+                </div>
+            <% }); %>
+        </script>
+    </body>
+</html>
