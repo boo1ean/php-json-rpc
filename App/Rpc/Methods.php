@@ -8,8 +8,8 @@ class Methods
         $this->container = $container;
     }
 
-    public function login($params) {
-        $result = $this->container['user-service']->login($params);
+    public function login($p) {
+        $result = $this->container['user-service']->login($p);
         if (!$result) {
             throw new \Exception('Invalid email or password.');
         }
@@ -17,7 +17,7 @@ class Methods
         return $this->container['user']->to_json();
     }
 
-    public function businesses() {
+    public function userBusinesses() {
         $user = $this->container['user']; 
 
         if (is_null($user)) {
@@ -26,6 +26,24 @@ class Methods
 
         $businesses = $user->businesses;
         return $this->json($businesses);
+    }
+
+    /**
+     * Get list of all businesses
+     */
+    public function businesses($p) {
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        return $this->json($businesses);
+    }
+
+    /**
+     * Get list of product for specified business
+     *
+     * @param integer $business_id
+     **/
+    public function products($p) {
+        $products = $this->container['product-service']->getProducts($p);
+        return $this->json($products);
     }
 
     public function logout() {
@@ -39,7 +57,7 @@ class Methods
      * @param array $models array of models
      * @return string json encoded collection
      */
-    public function json($models) {
+    public function json($models = array()) {
         $result = array();
         foreach ($models as $model) {
             $result[] = $model->attributes();
