@@ -7,8 +7,9 @@
     "components"
   ],
   "dependencies": {
-    "jquery-jsonrpc": "git://github.com/datagraph/jquery-jsonrpc.git",
     "jquery": "~2.0.0",
-    "bootstrap": "~2.3.1"
+    "bootstrap": "~2.3.1",
+    "underscore": "~1.4.4",
+    "backbone": "~1.0.0"
   }
 }
