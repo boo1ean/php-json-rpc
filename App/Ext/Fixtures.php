@@ -5,11 +5,12 @@ use App\Model\User;
 use App\Model\Business;
 use App\Model\Product;
 use App\Model\Booking;
+use App\Model\Review;
 
 class Fixtures
 {
     const DEFAULT_PASSWORD   = 'test';
-    const DEFAULT_BATCH_SIZE = 10;
+    const DEFAULT_BUNCH_SIZE = 10;
 
     public $methodPrefix = 'create';
 
@@ -55,7 +56,7 @@ class Fixtures
         return User::create($p);
     }
 
-    public function createUsers($count = self::DEFAULT_BATCH_SIZE) {
+    public function createUsers($count = self::DEFAULT_BUNCH_SIZE) {
         $users = array();
         for ($i = 0; $i < $count; ++$i) {
             $users[] = $this->createUser();
@@ -88,7 +89,7 @@ class Fixtures
      * @param integer $number number of businesses to create
      * @return array of App\Model\Business
      */
-    public function createBusinesses($user_id, $count = self::DEFAULT_BATCH_SIZE) {
+    public function createBusinesses($user_id, $count = self::DEFAULT_BUNCH_SIZE) {
         $businesses = array();
         for ($i = 0; $i < $count; ++$i) {
             $businesses[] = $this->createBusiness($user_id);
@@ -108,11 +109,45 @@ class Fixtures
         $p = array_merge(array(
             'business_id' => $business_id,
             'name'        => $this->faker->name,
-            'price'        => $this->faker->randomFloat
+            'price'       => $this->faker->randomFloat
         ), $p);
 
         $this->log("Product created: business_id={$p['business_id']}, {$p['name']}");
         return Product::create($p);
+    }
+
+    /**
+     * Create review
+     *
+     * @param integer $user_id
+     * @param integer $business_id
+     */
+    public function createReview($user_id, $business_id, $p = array()) {
+        $p = array_merge(array(
+            'business_id' => $business_id,
+            'user_id'     => $user_id,
+            'title'       => $this->faker->name,
+            'body'        => $this->faker->text
+        ), $p);
+
+        $this->log("Review created: business_id={$p['business_id']}, user_id={$p['user_id']}");
+        return Review::create($p);
+    }
+
+    /**
+     * Create bunch of reviews
+     *
+     * @param integer $user_id
+     * @param integer $business_id
+     * @@aram integer $count number of reviews to create
+     */
+    public function createReviews($user_id, $business_id, $count = self::DEFAULT_BUNCH_SIZE) {
+        $reviews = array();
+        for ($i = 0; $i < $count; ++$i) {
+            $reviews[] = $this->createReview($user_id, $business_id);
+        }
+
+        return $reviews;
     }
 
     /**
@@ -142,7 +177,7 @@ class Fixtures
      * @param integer $product_id
      * @param integer $count number of bookings
      */
-    public function createBookings($product_id, $count = self::DEFAULT_BATCH_SIZE) {
+    public function createBookings($product_id, $count = self::DEFAULT_BUNCH_SIZE) {
         $bookings = array();
         for ($i = 0; $i < $count; ++$i) {
             $bookings[] = $this->createBooking($product_id);
@@ -157,7 +192,7 @@ class Fixtures
      * @param integer $business_id
      * @param integer $count number of products
      */
-    public function createProducts($business_id, $count = self::DEFAULT_BATCH_SIZE) {
+    public function createProducts($business_id, $count = self::DEFAULT_BUNCH_SIZE) {
         $products = array();
         for ($i = 0; $i < $count; ++$i) {
             $products[] = $this->createProduct($business_id);
