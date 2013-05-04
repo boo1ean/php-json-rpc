@@ -85,6 +85,10 @@ window.app = (function($, Backbone, _) {
             "click #send-request": "sendRequest"
         },
 
+        initialize: function() {
+            this.listenTo(this.model, "send", this.sendRequest);
+        },
+
         sendRequest: function() {
             var request = JSON.stringify(this.model.toJSON());
             var url     = this.$el.find("#server-url").val();
@@ -132,6 +136,10 @@ window.app = (function($, Backbone, _) {
             params[param] = value;
             this.options.request.set({ params: params });
             this.options.request.trigger("change");
+
+            if (13 === e.keyCode) {
+                this.options.request.trigger("send");
+            }
         },
 
         render: function() {
