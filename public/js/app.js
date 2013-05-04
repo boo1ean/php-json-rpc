@@ -66,14 +66,16 @@ window.app = (function($, Backbone, _) {
     });
 
     App.views.RequestView = Backbone.View.extend({
-        el: "#request-view",
+        el: "#request-view > pre > code",
 
         initialize: function() {
             this.listenTo(this.model, "change", this.render);
         },
 
         render: function() {
-            this.$el.html(JSON.stringify(this.model.toJSON()));
+            var json = JSON.stringify(this.model.toJSON(), null, "  ");
+            this.$el.html(json);
+            hljs.highlightBlock(this.el);
         }
     });
 
@@ -153,7 +155,7 @@ window.app = (function($, Backbone, _) {
         var methodsView = new App.views.MethodsListView({ collection: methods });
         var methodView  = new App.views.MethodFormView({ model: currentMethod, request: request });
         var requestView = new App.views.RequestView({ model: request });
-        var controls     = new App.views.Controls({ model: request });
+        var controls    = new App.views.Controls({ model: request });
 
         var Router = Backbone.Router.extend({
           routes: {

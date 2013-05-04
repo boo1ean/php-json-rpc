@@ -5,3 +5,11 @@
 #controls {
     margin-bottom: 15px;
 }
+
+.json-view.well {
+    padding: 6px;
+}
+
+.json-view pre {
+    border: none;
+}
