@@ -77,4 +77,22 @@ class BookingTest extends TestCase
 
         $this->container['booking-service']->requestBooking($p);
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testUserNotFound() {
+        $p = $this->p;
+        $p['user_id'] = 3948384;
+        $this->container['booking-service']->requestBooking($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testBookingNotFound() {
+        $p = $this->p;
+        $p['booking_id'] = 3948384;
+        $this->container['booking-service']->requestBooking($p);
+    }
 }
