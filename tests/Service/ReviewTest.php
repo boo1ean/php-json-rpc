@@ -65,6 +65,24 @@ class ReviewTest extends TestCase
     /**
      * @expectedException Exception
      */
+    public function testBusinessNotFound() {
+        $p = $this->p;
+        $p['business_id'] = 3948384;
+        $this->container['review-service']->addReview($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testUserNotFound() {
+        $p = $this->p;
+        $p['user_id'] = 3948384;
+        $this->container['review-service']->addReview($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
     public function testNoBody() {
         $p = $this->p;
         unset($p['body']);
