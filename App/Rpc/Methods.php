@@ -14,18 +14,7 @@ class Methods
             throw new \Exception('Invalid email or password.');
         }
 
-        return $this->container['user']->to_json();
-    }
-
-    public function userBusinesses($p = array()) {
-        $user = $this->container['user']; 
-
-        if (is_null($user)) {
-            throw new \Exception('Unauthorized');
-        }
-
-        $businesses = $user->businesses;
-        return $this->json($businesses);
+        return $this->container['user']->attributes();
     }
 
     /**
@@ -40,7 +29,7 @@ class Methods
         $p = array_merge($defaults, $p);
 
         $businesses = $this->container['business-service']->getBusinesses($p);
-        return $this->json($businesses);
+        return $this->prepare($businesses);
     }
 
     /**
@@ -49,8 +38,15 @@ class Methods
      * @param integer $business_id
      **/
     public function products($p = array()) {
+        $defaults = array(
+            'rpp' => 30,
+            'page' => 1
+        );
+
+        $p = array_merge($defaults, $p);
+
         $products = $this->container['product-service']->getProducts($p);
-        return $this->json($products);
+        return $this->prepare($products);
     }
 
     public function logout() {
@@ -59,17 +55,17 @@ class Methods
     }
 
     /**
-     * Serialize array of activerecords to json
+     * Serialize array of activerecords to array of objects
      *
      * @param array $models array of models
-     * @return string json encoded collection
+     * @return array of objects
      */
-    public function json($models = array()) {
+    public function prepare($models = array()) {
         $result = array();
         foreach ($models as $model) {
             $result[] = $model->attributes();
         }
 
-        return json_encode($result);
+        return $result;
     }
 }

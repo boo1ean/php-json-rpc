@@ -78,4 +78,18 @@ class Service
             }
         }
     }
+
+    /**
+     * Translates rpp & page to limit and offset
+     *
+     * @param  array $p service method params
+     * @return array limit and offset for query
+     */
+    public function pagination($p) {
+        $offset = $p['rpp'] * ($p['page'] - 1);
+        return array(
+            'limit'  => $p['rpp'],
+            'offset' => $offset
+        );
+    }
 }

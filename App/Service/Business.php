@@ -20,13 +20,7 @@ class Business extends Service
     }
 
     protected function _getBusinesses($p) {
-        $offset = $p['rpp'] * ($p['page'] - 1);
-
-        $options = array(
-            'limit'  => $p['rpp'],
-            'offset' => $offset
-        );
-
+        $options    = $this->pagination($p);
         $businesses = Model::find('all', $options);
         return $businesses;
     }

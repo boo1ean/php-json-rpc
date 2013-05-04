@@ -7,10 +7,15 @@ use App\Model\Product as Model;
 
 class Product extends Service
 {
+    const MIN_RPP = 4;
+    const MAX_RPP = 31;
+
     public function validation() {
         return array(
             'getProducts' => array(
-                'business_id' => v::notEmpty()->int()->positive()
+                'business_id' => v::notEmpty()->int()->positive(),
+                'rpp'         => v::int()->between(self::MIN_RPP, self::MAX_RPP),
+                'page'        => v::int()->positive()
             )
         );
     }
@@ -22,12 +27,8 @@ class Product extends Service
      * @return array collection of product
      */
     protected function _getProducts($p) {
-        $products = Model::find('all', array(
-            'conditions' => array(
-                'business_id = ?', $p['business_id']
-            )
-        ));
-
-        return $products;
+        $options = $this->pagination($p);
+        $options['conditions'] = array('business_id = ?', $p['business_id']);
+        return Model::find('all', $options);
     }
 }
