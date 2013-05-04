@@ -2,20 +2,25 @@
 namespace App\Rpc;
 class Methods
 {
-    protected $container;
+    /**
+     * DI container
+     */
+    protected $c;
 
-    public function __construct($container) {
-        $this->container = $container;
-        $this->user      = $this->container['user'];
+    /**
+     * @param Pimple $c DI container instance
+     */
+    public function __construct($c) {
+        $this->c = $c;
     }
 
     public function login($p = array()) {
-        $result = $this->container['user-service']->login($p);
+        $result = $this->c['user-service']->login($p);
         if (!$result) {
             throw new \Exception('Invalid email or password.');
         }
 
-        return $this->container['user']->attributes();
+        return $this->c['user']->attributes();
     }
 
     /**
@@ -29,7 +34,7 @@ class Methods
 
         $p = array_merge($defaults, $p);
 
-        $businesses = $this->container['business-service']->getBusinesses($p);
+        $businesses = $this->c['business-service']->getBusinesses($p);
         return $this->prepare($businesses);
     }
 
@@ -47,7 +52,7 @@ class Methods
 
         $p = array_merge($defaults, $p);
 
-        $products = $this->container['product-service']->getProducts($p);
+        $products = $this->c['product-service']->getProducts($p);
 
         $result = array();
         if ($p['include_bookings']) {
@@ -72,12 +77,12 @@ class Methods
 
     public function book($p) {
         $this->checkSession();
-        $p['user_id'] = $this->user->id;
-        return $this->container['booking-service']->requestBooking($p)->attributes();
+        $p['user_id'] = $this->c['user']->id;
+        return $this->c['booking-service']->requestBooking($p)->attributes();
     }
 
     public function logout() {
-        $this->container['auth-service']->clearIdentity();
+        $this->c['auth-service']->clearIdentity();
         return true;
     }
 
@@ -98,7 +103,7 @@ class Methods
     }
 
     protected function checkSession() {
-        if (!$this->user) {
+        if (!$this->c['user']) {
             throw new \Exception('Unauthorized.');
         }
     }

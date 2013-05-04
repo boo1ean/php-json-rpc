@@ -156,6 +156,45 @@ class MethodsTest extends TestCase
         $this->assertCount($count, $result);
     }
 
+    public function testBookMethod() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $product  = $this->createProduct($business->id);
+        $booking  = $this->createBooking($product->id);
+
+        $time   = new \DateTime('NOW');
+        $params = array(
+            'booking_id' => $booking->id,
+            'start_time' => $time->format(\DateTime::ISO8601)
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'book',
+            'params' => $params
+        ));
+
+        // Test unauthorized
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('error', $response);
+        $this->container['user'] = $user;
+
+        $request = $this->composeRequest(array(
+            'method' => 'book',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $productBooking = $response->result;
+
+        $this->assertEquals($productBooking->user_id, $user->id);
+        $this->assertEquals($productBooking->booking_id, $booking->id);
+    }
+
     public function testComposeRequestHelper() {
         $request = $this->composeRequest();
         $this->assertNotEmpty($request);
