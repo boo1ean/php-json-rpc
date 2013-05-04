@@ -170,7 +170,7 @@ window.app = (function($, Backbone, _) {
 
             {
                 name: "products",
-                params: ["business_id", "page", "rpp"]
+                params: ["business_id", "page", "rpp", "include_bookings"]
             },
         ]);
 

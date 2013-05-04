@@ -41,7 +41,7 @@ class Methods
         $defaults = array(
             'rpp' => 30,
             'page' => 1,
-            'include_bookings' => true
+            'include_bookings' => false
         );
 
         $p = array_merge($defaults, $p);

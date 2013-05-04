@@ -2,9 +2,10 @@
 class ProductService extends TestCase
 {
     public $p = array(
-        'rpp'         => 30,
-        'page'        => 1,
-        'business_id' => 1
+        'rpp'              => 30,
+        'page'             => 1,
+        'business_id'      => 1,
+        'include_bookings' => ''
     );
 
     public function testGetProducts() {
@@ -22,7 +23,6 @@ class ProductService extends TestCase
         $user     = $this->createUser();
         $business = $this->createBusiness($user->id);
         $p = array_merge($this->p, array('business_id' => $business->id));
-
         $result = $this->container['product-service']->getProducts($p);
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
@@ -67,5 +67,23 @@ class ProductService extends TestCase
         $p = $this->p;
         $p['rpp'] = 31;
         $this->container['product-service']->getProducts($p);
+    }
+
+    public function testProductWithBookings() {
+        $p = $this->p;
+        $p['include_bookings'] = true;
+
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $products = $this->createProducts($business->id, 3);
+        foreach ($products as $product) {
+            $this->createBookings($product->id, 3);
+        }
+
+        $prdoucts = $this->container['product-service']->getProducts($p);
+        $this->assertCount(3, $products);
+        foreach ($products as $product) {
+            $this->assertCount(3, $product->bookings);
+        }
     }
 }
