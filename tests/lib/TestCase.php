@@ -50,6 +50,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         $connection = User::connection();
 
         $tables = array(
+            'reviews',
             'product_bookings',
             'bookings',
             'products',
