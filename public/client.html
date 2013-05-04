@@ -1,10 +1,11 @@
+<!doctype html>
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>JSON-RPC client</title>
 
         <link href="/components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
-        <link href="/components/highlightjs/styles/github.css" rel="stylesheet">
+        <link href="/components/highlightjs/styles/dark.css" rel="stylesheet">
         <link href="/css/style.css" rel="stylesheet">
 
         <script type="text/javascript" src="/components/jquery/jquery.min.js"></script>
@@ -17,7 +18,7 @@
         <header class="subhead">
           <div class="container">
             <h1>JSON-RPC Test Console</h1>
-            <p class="lead">Here will be dragons.</p>
+            <p class="lead">Here be dragons.</p>
           </div>
         </header>
 
@@ -28,7 +29,16 @@
                 </div>
 
                 <div class="span9" id="controls">
-                    <button class="btn btn-primary" id="send-request">Send</button>
+                    <div class="span4 buttons">
+                        <div class="input-prepend">
+                            <span class="add-on">JSON-RPC</span>
+                            <input class="span3" id="server-url" type="text" placeholder="http://example.com/rpc" value="/">
+                        </div>
+                    </div>
+
+                    <div class="span4">
+                        <button class="btn btn-primary" id="send-request">Send</button>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -37,8 +47,8 @@
                         </div>
                     </div>
 
-                    <div class="well span4 json-view" id="request-view"><pre><code></code></pre></div>
-                    <div class="well span4 json-view" id="response-view"></div>
+                    <div class="well span4 json-view" id="request-view">Request:<pre><code></code></pre></div>
+                    <div class="well span4 json-view" id="response-view">Response:<pre><code></code></pre></div>
                 </div>
             </div>
         </div>

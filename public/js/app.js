@@ -25,6 +25,8 @@ window.app = (function($, Backbone, _) {
         }
     });
 
+    App.models.Response = Backbone.Model.extend();
+
     App.collections.Methods = Backbone.Collection.extend({
         model: App.models.Method
     });
@@ -65,9 +67,7 @@ window.app = (function($, Backbone, _) {
         }
     });
 
-    App.views.RequestView = Backbone.View.extend({
-        el: "#request-view > pre > code",
-
+    App.views.JsonView = Backbone.View.extend({
         initialize: function() {
             this.listenTo(this.model, "change", this.render);
         },
@@ -86,7 +86,19 @@ window.app = (function($, Backbone, _) {
         },
 
         sendRequest: function() {
-            console.log(this.model.toJSON());
+            var request = JSON.stringify(this.model.toJSON());
+            var url     = this.$el.find("#server-url").val();
+            var that    = this;
+
+            $.ajax(url, {
+                type: "POST",
+                data: request,
+                processData: false,
+                contentType: "application/json"
+            }).done(function(data) {
+                that.options.response.clear();
+                that.options.response.set(data);
+            });
         }
     });
 
@@ -150,12 +162,14 @@ window.app = (function($, Backbone, _) {
         ]);
 
         var currentMethod = new App.models.Method;
-        var request = new App.models.Request;
+        var request       = new App.models.Request;
+        var response      = new App.models.Response;
 
-        var methodsView = new App.views.MethodsListView({ collection: methods });
-        var methodView  = new App.views.MethodFormView({ model: currentMethod, request: request });
-        var requestView = new App.views.RequestView({ model: request });
-        var controls    = new App.views.Controls({ model: request });
+        var methodsView  = new App.views.MethodsListView({ collection: methods });
+        var methodView   = new App.views.MethodFormView({ model: currentMethod, request: request });
+        var requestView  = new App.views.JsonView({ el: "#request-view pre code", model: request });
+        var responseView = new App.views.JsonView({ el: "#response-view pre code", model: response });
+        var controls     = new App.views.Controls({ model: request, response: response });
 
         var Router = Backbone.Router.extend({
           routes: {

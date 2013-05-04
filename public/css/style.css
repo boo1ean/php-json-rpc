@@ -2,14 +2,14 @@
     min-height: 400px;
 }
 
-#controls {
-    margin-bottom: 15px;
-}
-
 .json-view.well {
     padding: 6px;
 }
 
 .json-view pre {
     border: none;
+}
+
+#controls > .buttons {
+    margin-left: 0
 }
