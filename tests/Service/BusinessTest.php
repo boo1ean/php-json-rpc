@@ -25,13 +25,48 @@ class BusinessTest extends TestCase
         $this->assertCount($count * 2, $businesses);
     }
 
-    public function testBusinessPagination() {
-        $this->assertTrue(true);
-    }
-
     public function testNoBusinesses() {
         $businesses = $this->container['business-service']->getBusinesses($this->p);
         $this->assertInternalType('array', $businesses);
         $this->assertEmpty($businesses);
+    }
+
+    public function testPagination() {
+        $p = $this->p;
+        $user = $this->createUser();
+        $this->createBusinesses($user->id, 30);
+
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        $this->assertCount(20, $businesses);
+
+        $p['page'] = 2;
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        $this->assertCount(10, $businesses);
+
+        $p['rpp'] = 15;
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        $this->assertCount(15, $businesses);
+
+        $p['page'] = 3;
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        $this->assertEmpty($businesses);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testInvalidRppMaxRange() {
+        $p = $this->p;
+        $p['rpp'] = 21;
+        $this->container['business-service']->getBusinesses($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testInvalidRppMinRange() {
+        $p = $this->p;
+        $p['rpp'] = 4;
+        $this->container['business-service']->getBusinesses($p);
     }
 }

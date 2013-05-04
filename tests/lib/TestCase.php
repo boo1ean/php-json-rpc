@@ -29,7 +29,8 @@ class TestCase extends PHPUnit_Framework_TestCase
         $this->faker     = Faker\Factory::create();
     }
 
-    public function setup() {
+    public function setUp() {
+        parent::setUp();
         $this->clearDb();
     }
 
