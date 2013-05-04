@@ -6,7 +6,8 @@ class MethodsTest extends TestCase
     protected $server;
     protected $request;
 
-    public function setUp() {
+    public function __construct() {
+        parent::__construct();
         $this->server  = $this->container['json-rpc-server'];
         $this->request = array(
             'jsonrpc' => '2.0',
@@ -14,7 +15,6 @@ class MethodsTest extends TestCase
             'params'  => array(),
             'id'      => $this->faker->md5
         );
-
     }
 
     public function testLogin() {
@@ -97,9 +97,42 @@ class MethodsTest extends TestCase
         $response = json_decode($response);
 
         $this->assertObjectHasAttribute('result', $response);
-        $result = json_decode($response->result);
+        $result = $response->result;
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
+    }
+
+    public function testBusinessProducts() {
+        $count    = 12;
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+
+        $this->createProducts($business->id, $count);
+
+        $params = array(
+            'business_id' => $business->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'products',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $result = $response->result;
+        $this->assertCount($count, $result);
+
+        $this->createProducts($business->id, $count);
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $result = $response->result;
+        $this->assertCount($count * 2, $result);
+
     }
 
     public function testBusinessesList() {
@@ -119,7 +152,7 @@ class MethodsTest extends TestCase
         $response = json_decode($response);
 
         $this->assertObjectHasAttribute('result', $response);
-        $result = json_decode($response->result);
+        $result = $response->result;
         $this->assertCount($count, $result);
     }
 
