@@ -1,5 +1,13 @@
 #method-form-view {
-    min-height: 400px;
+    min-height: 250px;
+}
+
+#request-view {
+    min-height: 276px;
+}
+
+#response-view {
+    margin-left: 248px;
 }
 
 .json-view.well {
@@ -12,4 +20,12 @@
 
 #controls > .buttons {
     margin-left: 0
+}
+
+[class*="span"] {
+    margin-left: 15px;
+}
+
+code.json {
+    border-radius: 8px;
 }
