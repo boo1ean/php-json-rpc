@@ -40,13 +40,33 @@ class Methods
     public function products($p = array()) {
         $defaults = array(
             'rpp' => 30,
-            'page' => 1
+            'page' => 1,
+            'include_bookings' => true
         );
 
         $p = array_merge($defaults, $p);
 
         $products = $this->container['product-service']->getProducts($p);
-        return $this->prepare($products);
+
+        $result = array();
+        if ($p['include_bookings']) {
+            foreach ($products as $product) {
+                $bookings = $product->bookings;
+                $bookingsData = array();
+                foreach ($bookings as $booking) {
+                    $bookingsData[] = $booking->attributes();
+                }
+
+                $data = $product->attributes();
+                $data['bookings'] = $bookingsData;
+
+                $result[] = $data;
+            }
+        } else {
+            $result = $this->prepare($products);
+        }
+
+        return $result;
     }
 
     public function logout() {

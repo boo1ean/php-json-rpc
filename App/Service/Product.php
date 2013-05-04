@@ -29,6 +29,7 @@ class Product extends Service
     protected function _getProducts($p) {
         $options = $this->pagination($p);
         $options['conditions'] = array('business_id = ?', $p['business_id']);
+        $options['include']    = array('bookings');
         return Model::find('all', $options);
     }
 }
