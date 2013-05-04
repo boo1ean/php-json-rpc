@@ -73,7 +73,7 @@ class Methods
     public function book($p) {
         $this->checkSession();
         $p['user_id'] = $this->user->id;
-        return $this->container['booking-service']->bookProduct($p);
+        return $this->container['booking-service']->requestBooking($p)->attributes();
     }
 
     public function logout() {
@@ -99,7 +99,7 @@ class Methods
 
     protected function checkSession() {
         if (!$this->user) {
-            throw new Exception('Unauthorized.');
+            throw new \Exception('Unauthorized.');
         }
     }
 }

@@ -172,6 +172,12 @@ window.app = (function($, Backbone, _) {
                 name: "products",
                 params: ["business_id", "page", "rpp", "include_bookings"]
             },
+
+            {
+                name: "book",
+                params: ["booking_id", "start_time"]
+            }
+
         ]);
 
         var currentMethod = new App.models.Method;

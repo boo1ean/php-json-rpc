@@ -24,16 +24,20 @@ class Booking extends Service
      *
      * @param integer $user_id
      * @param integer $booking_id
+     * @param string  $start_time ISO8601 format
      */
     protected function _requestBooking($p) {
         // TODO Check if available
-        $booking = BookingModel::find($p['booking_id']);
-        if (!$booking) {
+
+        try {
+            $booking = BookingModel::find($p['booking_id']);
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException("Booking with id {$p['booking_id']} doesn't exist.");
         }
 
-        $user = UserModel::find($p['user_id']);
-        if (!$user) {
+        try {
+            $user = UserModel::find($p['user_id']);
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
         }
 
