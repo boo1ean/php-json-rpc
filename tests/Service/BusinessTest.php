@@ -5,6 +5,7 @@ class BusinessTest extends TestCase
         parent::__construct();
         $this->p = array('rpp' => 20, 'page' => 1);
     }
+
     public function testGetBusinesses() {
         $user1 = $this->createUser();
         $user2 = $this->createUser();
@@ -68,5 +69,21 @@ class BusinessTest extends TestCase
         $p = $this->p;
         $p['rpp'] = 4;
         $this->container['business-service']->getBusinesses($p);
+    }
+
+    public function testIncludeReviews() {
+        $user = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $this->createReviews($user->id, $business->id, 10);
+
+        $p = $this->p;
+        $p['include_reviews'] = true;
+
+        $businesses = $this->container['business-service']->getBusinesses($p);
+        $this->assertNotEmpty($businesses);
+
+        $business = array_shift($businesses);
+        $reviews  = $business->reviews;
+        $this->assertCount(10, $reviews);
     }
 }
