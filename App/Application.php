@@ -107,5 +107,9 @@ class Application
         $this->container['booking-service'] = $this->container->share(function($c) {
             return new \App\Service\Booking($c);
         });
+
+        $this->container['review-service'] = $this->container->share(function($c) {
+            return new \App\Service\Review($c);
+        });
     }
 }

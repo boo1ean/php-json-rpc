@@ -29,13 +29,33 @@ class Methods
     public function businesses($p = array()) {
         $defaults = array(
             'rpp' => 20,
-            'page' => 1
+            'page' => 1,
+            'include_reviews' => false
         );
 
         $p = array_merge($defaults, $p);
 
         $businesses = $this->c['business-service']->getBusinesses($p);
-        return $this->prepare($businesses);
+
+        $result = array();
+        // TODO add aggregation method
+        if ($p['include_reviews']) {
+            foreach ($businesses as $business) {
+                $reviews = $business->reviews;
+                $reviewsData = array();
+                foreach ($reviews as $review) {
+                    $reviewsData[] = $review->attributes();
+                }
+                $data = $business->attributes();
+                $data['reviews'] = $reviewsData;
+
+                $result[] = $data;
+            }
+        } else {
+            $result = $this->prepare($businesses);
+        }
+
+        return $result;
     }
 
     /**
@@ -75,10 +95,22 @@ class Methods
         return $result;
     }
 
+    /**
+     * Request for booking
+     */
     public function book($p) {
         $this->checkSession();
         $p['user_id'] = $this->c['user']->id;
         return $this->c['booking-service']->requestBooking($p)->attributes();
+    }
+
+    /**
+     * Add review to a business
+     */
+    public function addReview($p) {
+        $this->checkSession();
+        $p['user_id'] = $this->c['user']->id;
+        return $this->c['review-service']->addReview($p)->attributes();
     }
 
     public function logout() {

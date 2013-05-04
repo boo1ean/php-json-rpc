@@ -21,6 +21,11 @@ class Business extends Service
 
     protected function _getBusinesses($p) {
         $options    = $this->pagination($p);
+
+        if (isset($p['include_reviews']) && $p['include_reviews']) {
+            $options['include'] = array('reviews');
+        }
+
         $businesses = Model::find('all', $options);
         return $businesses;
     }

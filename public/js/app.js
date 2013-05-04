@@ -165,7 +165,7 @@ window.app = (function($, Backbone, _) {
 
             {
                 name: "businesses",
-                params: ["page", "rpp"]
+                params: ["page", "rpp", "include_reviews"]
             },
 
             {
@@ -176,6 +176,11 @@ window.app = (function($, Backbone, _) {
             {
                 name: "book",
                 params: ["booking_id", "start_time"]
+            },
+
+            {
+                name: "addReview",
+                params: ["business_id", "title", "body"]
             }
 
         ]);

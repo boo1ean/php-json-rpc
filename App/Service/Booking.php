@@ -30,13 +30,13 @@ class Booking extends Service
         // TODO Check if available
 
         try {
-            $booking = BookingModel::find($p['booking_id']);
+            BookingModel::find($p['booking_id']);
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("Booking with id {$p['booking_id']} doesn't exist.");
         }
 
         try {
-            $user = UserModel::find($p['user_id']);
+            UserModel::find($p['user_id']);
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
         }
