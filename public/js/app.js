@@ -166,7 +166,12 @@ window.app = (function($, Backbone, _) {
             {
                 name: "businesses",
                 params: ["page", "rpp"]
-            }
+            },
+
+            {
+                name: "products",
+                params: ["business_id", "page", "rpp"]
+            },
         ]);
 
         var currentMethod = new App.models.Method;
