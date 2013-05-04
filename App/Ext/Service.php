@@ -74,7 +74,12 @@ class Service
 
             $result = $rule->validate($value);
             if (!$result) {
-                $rule->check($value);
+                try {
+                    $rule->check($value);
+                } catch (\InvalidArgumentException $e) {
+                    $e->setName($key);
+                    throw new \Exception($e->getMainMessage());
+                }
             }
         }
     }
