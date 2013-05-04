@@ -15,7 +15,7 @@ class Review extends Service
                 'user_id'     => v::notEmpty()->int()->positive(),
                 'business_id' => v::notEmpty()->int()->positive(),
                 'title'       => v::notEmpty()->string()->length(0, 255),
-                'body'        => v::notEmpty()->string()->length(0, 2000)
+                'body'        => v::notEmpty()->string()->length(4, 2000)
             )
         );
     }

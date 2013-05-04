@@ -1,7 +1,7 @@
 <?php
 class BookingTest extends TestCase
 {
-    protected $p, $user, $product, $booking;
+    protected $p, $user, $product, $business, $booking;
 
     public function __construct() {
         parent::__construct();
