@@ -6,6 +6,7 @@ class Methods
 
     public function __construct($container) {
         $this->container = $container;
+        $this->user      = $this->container['user'];
     }
 
     public function login($p = array()) {
@@ -69,10 +70,17 @@ class Methods
         return $result;
     }
 
+    public function book($p) {
+        $this->checkSession();
+        $p['user_id'] = $this->user->id;
+        return $this->container['booking-service']->bookProduct($p);
+    }
+
     public function logout() {
         $this->container['auth-service']->clearIdentity();
         return true;
     }
+
 
     /**
      * Serialize array of activerecords to array of objects
@@ -80,12 +88,18 @@ class Methods
      * @param array $models array of models
      * @return array of objects
      */
-    public function prepare($models = array()) {
+    protected function prepare($models = array()) {
         $result = array();
         foreach ($models as $model) {
             $result[] = $model->attributes();
         }
 
         return $result;
+    }
+
+    protected function checkSession() {
+        if (!$this->user) {
+            throw new Exception('Unauthorized.');
+        }
     }
 }

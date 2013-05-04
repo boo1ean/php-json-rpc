@@ -103,5 +103,9 @@ class Application
         $this->container['product-service'] = $this->container->share(function($c) {
             return new \App\Service\Product($c);
         });
+
+        $this->container['booking-service'] = $this->container->share(function($c) {
+            return new \App\Service\Booking($c);
+        });
     }
 }
