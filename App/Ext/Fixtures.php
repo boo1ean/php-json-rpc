@@ -86,7 +86,8 @@ class Fixtures
     public function createProduct($business_id, $attributes = array()) {
         $attributes = array_merge(array(
             'business_id' => $business_id,
-            'name'        => $this->faker->name
+            'name'        => $this->faker->name,
+            'price'        => $this->faker->randomFloat
         ), $attributes);
 
         return Product::create($attributes);

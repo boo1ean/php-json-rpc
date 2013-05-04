@@ -42,9 +42,10 @@ CREATE TABLE IF NOT EXISTS `businesses` (
 
 CREATE TABLE IF NOT EXISTS `products` (
     `id`          INT(11)      NOT NULL AUTO_INCREMENT,
-    `business_id`    INT(11)      NOT NULL,
+    `business_id` INT(11)      NOT NULL,
     `name`        VARCHAR(255) NOT NULL DEFAULT '',
     `description` TEXT         NOT NULL DEFAULT '',
+    `price`       DOUBLE       NOT NULL,
     `photo`       VARCHAR(255),
     PRIMARY KEY (`id`),
     FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`)
