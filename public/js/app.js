@@ -208,6 +208,10 @@ window.app = (function($, Backbone, _) {
             },
 
             {
+                name: "pendingBookings"
+            },
+
+            {
                 name: "addReview",
                 params: ["business_id", "title", "body"]
             }

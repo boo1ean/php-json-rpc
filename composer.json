@@ -9,6 +9,7 @@
         "pimple/pimple": "1.0.*@dev",
         "fzaninotto/faker": "1.1.*@dev",
         "respect/validation": "dev-develop",
+        "sly/notification-pusher": "dev-master",
         "phpunit/phpunit": "3.7.19"
     }
 }
