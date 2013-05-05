@@ -67,7 +67,7 @@ class Service
 
         $rules = $rules[$method];
         foreach ($rules as $key => $rule) {
-            $value = '';
+            $value = null;
             if (array_key_exists($key, $params)) {
                 $value = $params[$key];
             }
@@ -75,6 +75,10 @@ class Service
             $result = $rule->validate($value);
             if (!$result) {
                 try {
+                    if ('' === $value) {
+                        $value = null;
+                    }
+
                     $rule->check($value);
                 } catch (\InvalidArgumentException $e) {
                     $e->setName($key);
