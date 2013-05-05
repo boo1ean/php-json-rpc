@@ -114,6 +114,13 @@ window.app = (function($, Backbone, _) {
             "keyup input": "updateRequest"
         },
 
+        keyCodes: {
+            ENTER: 13,
+            BACKSPACE: 8
+        },
+
+        prev: {},
+
         initialize: function() {
             this.template = _.template($(this.template).html())
             this.listenTo(this.model, "change", this.resetRequest);
@@ -133,13 +140,25 @@ window.app = (function($, Backbone, _) {
             var value  = $(e.currentTarget).val();
             var params = this.options.request.get("params");
 
-            params[param] = value;
+            switch (e.keyCode) {
+                case this.keyCodes.ENTER:
+                    this.options.request.trigger("send");
+                    return;
+
+                case this.keyCodes.BACKSPACE:
+                    if (_.isEmpty(this.prev[param])) {
+                        delete params[param];
+                        break;
+                    }
+
+                default:
+                    params[param] = value;
+            }
+
+            this.prev = params;
             this.options.request.set({ params: params });
             this.options.request.trigger("change");
 
-            if (13 === e.keyCode) {
-                this.options.request.trigger("send");
-            }
         },
 
         render: function() {
@@ -176,6 +195,11 @@ window.app = (function($, Backbone, _) {
             {
                 name: "book",
                 params: ["booking_id", "start_time"]
+            },
+
+            {
+                name: "productStatus",
+                params: ["product_id"]
             },
 
             {
