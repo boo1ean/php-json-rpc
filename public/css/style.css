@@ -6,6 +6,10 @@
     min-height: 276px;
 }
 
+#response-view {
+    float: right;
+}
+
 .json-view.well {
     padding: 6px;
 }
