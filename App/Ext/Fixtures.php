@@ -40,7 +40,7 @@ class Fixtures
      * Creates user
      * @return App\Model\Business
      */
-    public function createUser() {
+    public function createUser($arguments = array()) {
         $p = array(
             'email'        => $this->faker->email,
             'password'     => self::DEFAULT_PASSWORD,
@@ -51,6 +51,8 @@ class Fixtures
             'city'         => $this->faker->city,
             'address'      => $this->faker->address
         );
+
+        $p = array_merge($p, $arguments);
 
         $this->log("User created: {$p['first_name']} {$p['last_name']} {$p['email']}");
         return User::create($p);

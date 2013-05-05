@@ -51,6 +51,19 @@ class MethodsTest extends TestCase
             'method' => 'login',
             'params' => $params
         ));
+
+        // Invalid email
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertObjectHasAttribute('error', $response);
+
+        $params['email'] = $this->faker->email; 
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => $params
+        ));
+
+        // Invalid credentials
         $response = $this->server->handleRequest($request);
         $response = json_decode($response);
         $this->assertObjectHasAttribute('error', $response);
@@ -100,6 +113,140 @@ class MethodsTest extends TestCase
         $result = $response->result;
         $this->assertInternalType('array', $result);
         $this->assertEmpty($result);
+    }
+
+    public function testBusinessesWithReviews() {
+        $reviewsCount = 12;
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $reviews  = $this->createReviews($user->id, $business->id, $reviewsCount);
+
+        $params = array(
+            'include_reviews' => true
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'businesses',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $businesses = $response->result;
+        $this->assertInternalType('array', $businesses);
+        $reviews = $businesses[0]->reviews;
+        $this->assertInternalType('array', $reviews);
+        $this->assertCount($reviewsCount, $reviews);
+    }
+
+    public function testProductsWithBookings() {
+        $bookingsCount = 12;
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $product  = $this->createProduct($business->id);
+        $bookings = $this->createBookings($product->id, $bookingsCount);
+
+        $params = array(
+            'include_bookings' => true,
+            'business_id'      => $business->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'products',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $businesses = $response->result;
+        $this->assertInternalType('array', $businesses);
+        $bookings = $businesses[0]->bookings;
+        $this->assertInternalType('array', $bookings);
+        $this->assertCount($bookingsCount, $bookings);
+    }
+
+    public function testAddReview() {
+        $bookingsCount = 12;
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+
+        $params = array(
+            'business_id' => $business->id,
+            'title'       => $this->faker->name,
+            'body'        => $this->faker->text
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'addReview',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $this->assertEquals($response->result->business_id, $business->id);
+        $this->assertEquals($response->result->user_id, $user->id);
+    }
+
+    public function testUnauthorizedCall() {
+        $params = array(
+            'business_id' => 34,
+            'title'       => $this->faker->name,
+            'body'        => $this->faker->text
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'addReview',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('error', $response);
+        $this->assertEquals($response->error->message, 'Unauthorized.');
+    }
+
+    public function testLogout() {
+        $user = $this->createUser(array(
+            'password' => 'test'
+        ));
+
+        $params = array(
+            'email'    => $user->email,
+            'password' => 'test'
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'login',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $this->assertEquals($user->id, $response->result->id);
+
+        $identity = $this->container['auth-service']->getIdentity();
+        $this->assertEquals($user->id, $identity->id);
+
+        $request = $this->composeRequest(array(
+            'method' => 'logout'
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertTrue($response->result);
+        $this->assertNull($this->container['auth-service']->getIdentity());
     }
 
     public function testBusinessProducts() {
