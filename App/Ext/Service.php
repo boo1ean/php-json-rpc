@@ -17,7 +17,7 @@ class Service
      * @param string $name method name
      * @return array validation rules
      */
-    protected function validation() {
+    public function validation() {
         return array();
     }
 

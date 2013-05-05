@@ -425,9 +425,36 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'productStatus')));
         $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
         $this->assertTrue(is_callable(array($method, 'pendingBookings')));
+        $this->assertTrue(is_callable(array($method, 'approveBooking')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));
+    }
+
+    public function testApprove() {
+        $this->prepareBooking();
+        $user = $this->createUser();
+        $productBooking = $this->createProductBooking($user->id, $this->booking->id);
+
+        $params = array(
+            'product_booking_id' => $productBooking->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'approveBooking',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $this->user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductBooking::APPROVED);
     }
 
     public function testProductStatus() {
