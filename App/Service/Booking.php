@@ -46,4 +46,19 @@ class Booking extends Service
 
         return ProductBookingModel::create($p);
     }
+
+    /**
+     * Get list of pending booking requests for user
+     *
+     * @param $user_id
+     */
+    protected function _pendingBookings($p) {
+        try {
+            $user = UserModel::find($p['user_id']);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
+        }
+
+        return $user->getPendingBookings();
+    }
 }

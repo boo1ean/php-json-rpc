@@ -136,6 +136,15 @@ class Methods
     }
 
     /**
+     * Get list of pending bookigs for current user
+     */
+    public function pendingBookings($p = array()) {
+        $this->checkSession();
+        $p['user_id'] = $this->c['user']->id;
+        return $this->c['booking-service']->pendingBookings($p);
+    }
+
+    /**
      * Serialize array of activerecords to array of objects
      *
      * @param array $models array of models

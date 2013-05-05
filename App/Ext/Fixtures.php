@@ -226,6 +226,11 @@ class Fixtures
      * Generates default data set
      */
     public function createDefaultDataSet() {
+        $this->createUser(array(
+            'email'    => 'admin@example.com',
+            'password' => self::DEFAULT_PASSWORD
+        ));
+
         $count = $this->usersCount();
         $users = $this->createUsers($count);
         foreach ($users as $user) {

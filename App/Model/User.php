@@ -31,4 +31,41 @@ class User extends \ActiveRecord\Model
     public function set_password($plain) {
         $this->assign_attribute('password', static::encrypt($plain));
     }
+
+    /**
+     * Get list of pending bookings requests
+     *
+     * @return array pending bookings report
+     */
+    public function getPendingBookings() {
+        $conn = self::connection();
+        $sql = "
+            SELECT 
+
+            biz.name as business_name,
+            biz.id as business_id,
+            p.name as product_name,
+            p.id as product_id,
+            b.duration,
+            b.price,
+            pb.id as product_booking_id
+
+            FROM product_bookings pb
+
+            INNER JOIN bookings b
+            ON b.id = pb.booking_id AND pb.status = ? AND pb.start_time > NOW()
+
+            INNER JOIN products p
+            ON p.id = b.product_id
+
+            INNER JOIN businesses biz
+            ON biz.id = p.business_id
+
+            INNER JOIN users u
+            ON u.id = biz.user_id AND biz.user_id = ?
+        ";
+
+        $params = array(ProductBooking::PENDING, $this->id);
+        return $conn->query($sql, $params)->fetchAll();
+    }
 }
