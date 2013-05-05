@@ -16,6 +16,10 @@ class Product extends Service
                 'business_id' => v::notEmpty()->int()->positive(),
                 'rpp'         => v::int()->between(self::MIN_RPP, self::MAX_RPP),
                 'page'        => v::int()->positive()
+            ),
+
+            'productStatus' => array(
+                'product_id' => v::notEmpty()->int()->positive()
             )
         );
     }
@@ -35,5 +39,21 @@ class Product extends Service
         }
 
         return Model::find('all', $options);
+    }
+
+    /**
+     * Get product status/availability
+     *
+     * @param integer $product_id
+     * @return array
+     */
+    protected function _productStatus($p) {
+        try {
+            $product = Model::find($p['product_id']);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Product with id {$p['product_id']} doesn't exist");
+        }
+
+        return $product->statusReport();
     }
 }

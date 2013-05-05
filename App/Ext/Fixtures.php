@@ -195,6 +195,7 @@ class Fixtures
      */
     public function createProductBooking($user_id, $booking_id, $p = array()) {
         $time = $this->faker->dateTimeThisMonth;
+        $time->add(new \DateInterval('P1M'));
         $p = array_merge(array(
             'user_id'    => $user_id,
             'booking_id' => $booking_id,
@@ -241,18 +242,21 @@ class Fixtures
         $user = User::first();
         $products = Product::find('all');
         foreach ($products as $product) {
-            $count   = $this->bookingsCount();
+            $count    = $this->bookingsCount();
             $bookings = $this->createBookings($product->id, $count);
+
             $this->createProductBooking($user->id, $bookings[0]->id);
+            $this->createProductBooking($user->id, $bookings[1]->id);
+            $this->createProductBooking($user->id, $bookings[2]->id);
         }
     }
 
     public function usersCount() {
-        return mt_rand(5, 15);
+        return mt_rand(3, 5);
     }
 
     public function businessesCount() {
-        return mt_rand(0, 5);
+        return mt_rand(0, 2);
     }
 
     public function productsCount() {
@@ -260,6 +264,6 @@ class Fixtures
     }
 
     public function bookingsCount() {
-        return mt_rand(2, 4);
+        return mt_rand(3, 4);
     }
 }

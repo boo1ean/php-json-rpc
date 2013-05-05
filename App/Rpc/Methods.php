@@ -121,6 +121,12 @@ class Methods
         return true;
     }
 
+    /**
+     * Get status of specified product
+     */
+    public function productStatus($p) {
+        return $this->c['product-service']->productStatus($p);
+    }
 
     /**
      * Serialize array of activerecords to array of objects
