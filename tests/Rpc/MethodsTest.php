@@ -342,6 +342,20 @@ class MethodsTest extends TestCase
         $this->assertEquals($productBooking->booking_id, $booking->id);
     }
 
+    public function testRpcInterface() {
+        $method = $this->container['rpc-methods'];
+
+        $this->assertTrue(is_callable(array($method, 'login')));
+        $this->assertTrue(is_callable(array($method, 'logout')));
+        $this->assertTrue(is_callable(array($method, 'products')));
+        $this->assertTrue(is_callable(array($method, 'businesses')));
+        $this->assertTrue(is_callable(array($method, 'addReview')));
+        $this->assertTrue(is_callable(array($method, 'book')));
+
+        $this->assertFalse(is_callable(array($method, 'prepare')));
+        $this->assertFalse(is_callable(array($method, 'checkSession')));
+    }
+
     public function testComposeRequestHelper() {
         $request = $this->composeRequest();
         $this->assertNotEmpty($request);

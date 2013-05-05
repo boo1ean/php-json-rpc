@@ -113,6 +113,9 @@ class Methods
         return $this->c['review-service']->addReview($p)->attributes();
     }
 
+    /**
+     * Destroy user session
+     */
     public function logout() {
         $this->c['auth-service']->clearIdentity();
         return true;
