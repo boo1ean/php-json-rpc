@@ -78,7 +78,7 @@ class User extends \ActiveRecord\Model
     public function isAbleToUpdate($entity) {
         switch (true) {
             case ($entity instanceof \App\Model\ProductBooking):
-                return $this->isAbleToUpdateProductBooking();
+                return $this->isAbleToUpdateProductBooking($entity);
 
             default:
                 return false;

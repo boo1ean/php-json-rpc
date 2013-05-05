@@ -150,7 +150,7 @@ class Methods
     public function approveBooking($p) {
         $this->checkSession();
         $p['user_id'] = $this->c['user']->id;
-        return $this->c['booking-service']->approveBooking($p);
+        return $this->c['booking-service']->approveBooking($p)->attributes();
     }
 
     /**
