@@ -18,4 +18,9 @@
             <directory suffix=".php">Service</directory>
         </testsuite>
     </testsuites>
+     <filter>
+        <whitelist>
+            <directory suffix=".php">../App/</directory>
+        </whitelist>
+      </filter>
 </phpunit>
