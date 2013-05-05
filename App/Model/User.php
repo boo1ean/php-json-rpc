@@ -92,6 +92,6 @@ class User extends \ActiveRecord\Model
      */
     protected function isAbleToUpdateProductBooking($productBooking) {
         $owner = $productBooking->booking->product->business->user;
-        return $owner->id === $this->id;
+        return $owner->id == $this->id;
     }
 }
