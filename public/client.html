@@ -49,16 +49,14 @@
                     </div>
 
                     <div class="well span5 json-view" id="request-view">Request:<pre><code></code></pre></div>
+                    <div class="well span5 json-view" id="response-view">Response:<pre><code></code></pre></div>
                 </div>
-
-                <div class="well offset3 json-view" id="response-view">Response:<pre><code></code></pre></div>
             </div>
         </div>
 
         <script type="text/template" id="method-list-item-template">
             <a href="#<%= name %>"><i class="icon-chevron-right"></i> <%= name %></a>
         </script>
-
 
         <script type="text/template" id="method-form-template">
             <% _.each(params, function(param){ %>
