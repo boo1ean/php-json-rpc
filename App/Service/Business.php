@@ -31,6 +31,6 @@ class Business extends Service
     }
 
     protected function _topBusinesses() {
-        return Model::topByProductBookings(10);
+        return Model::topByProductBookings();
     }
 }

@@ -14,7 +14,7 @@ class Business extends \ActiveRecord\Model
         array('name')
     );
 
-    public static function topByProductBookings($count = 10) {
+    public static function topByProductBookings() {
         $conn = self::connection();
         $sql = "
             SELECT
@@ -33,8 +33,10 @@ class Business extends \ActiveRecord\Model
             INNER JOIN businesses biz
             ON biz.id = p.business_id
 
+
             GROUP BY biz.id
-            ORDER BY bookings_count DESC;
+            ORDER BY bookings_count DESC
+            LIMIT 10
         ";
 
         return $conn->query($sql)->fetchAll();
