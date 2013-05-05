@@ -117,7 +117,7 @@ class Methods
      * Destroy user session
      */
     public function logout() {
-        $this->c['auth-service']->clearIdentity();
+        $this->c['user-service']->logout();
         return true;
     }
 

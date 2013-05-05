@@ -12,7 +12,7 @@ class User extends Service
                 'password' => v::notEmpty()->string()
             )
         );
-}
+    }
 
     /**
      * Login and create use session
@@ -28,5 +28,9 @@ class User extends Service
         $result  = $auth->authenticate();
 
         return $result->isValid();
+    }
+
+    protected function _logout($p) {
+        return $this->container['auth-service']->clearIdentity();
     }
 }

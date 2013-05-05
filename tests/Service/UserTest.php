@@ -15,4 +15,22 @@ class UserTest extends TestCase
         $result = $this->container['user-service']->login($params);
         $this->assertTrue($result);
     }
+
+    public function testLogout() {
+        $password = 'test';
+        $user = $this->createUser(array(
+            'password' => $password
+        ));
+
+        $result = $this->container['user-service']->login(array(
+            'email'    => $user->email,
+            'password' => $password
+        ));
+
+        $this->assertNotEmpty($result);
+        $this->assertNotEmpty($this->container['auth-service']->getIdentity());
+
+        $this->container['user-service']->logout();
+        $this->assertNull($this->container['auth-service']->getIdentity());
+    }
 }
