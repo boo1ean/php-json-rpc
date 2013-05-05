@@ -29,3 +29,8 @@
 code.json {
     border-radius: 8px;
 }
+
+#test-methods-view {
+    margin-top: 15px;
+    border-radius: 10px;
+}

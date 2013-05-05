@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `city`         VARCHAR(45)  NOT NULL DEFAULT '',
     `address`      VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
-    KEY `email` (`email`)
+    UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `businesses` (
@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS `product_bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `reviews` (
-    `id`       INT(11)      NOT NULL AUTO_INCREMENT,
+    `id`          INT(11)      NOT NULL AUTO_INCREMENT,
     `business_id` INT(11)   NOT NULL,
-    `user_id`  INT(11)      NOT NULL,
-    `title`    VARCHAR(255) NOT NULL DEFAULT '',
-    `body`     TEXT         NOT NULL DEFAULT '',
+    `user_id`     INT(11)      NOT NULL,
+    `title`       VARCHAR(255) NOT NULL DEFAULT '',
+    `body`        TEXT         NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`),
     FOREIGN KEY (`user_id`)  REFERENCES `users`(`id`)

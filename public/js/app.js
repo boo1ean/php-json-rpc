@@ -12,6 +12,7 @@ window.app = (function($, Backbone, _) {
     App.models.Method = Backbone.Model.extend({
         defaults: {
             name: "",
+            test: false,
             params: []
         }
     });
@@ -48,13 +49,17 @@ window.app = (function($, Backbone, _) {
 
     App.views.MethodsListView = Backbone.View.extend({
         el: "#methods-view",
+        testMethodsTitle: "<li>For testing purposes only</li>",
+        methodsTitle: "<li>Main server methods</li>",
 
         initialize: function() {
+            this.testMethods = $("#test-methods-view");
             this.render();
         },
 
         render: function() {
-            this.$el.empty();
+            this.$el.html(this.methodsTitle);
+            this.testMethods.html(this.testMethodsTitle);
 
             var that = this;
             this.collection.each(function(model) {
@@ -62,7 +67,11 @@ window.app = (function($, Backbone, _) {
                     model: model
                 });
 
-                that.$el.append(view.render().el);
+                if (model.get("test")) {
+                    that.testMethods.append(view.render().el);
+                } else {
+                    that.$el.append(view.render().el);
+                }
             });
         }
     });
@@ -214,6 +223,42 @@ window.app = (function($, Backbone, _) {
             {
                 name: "addReview",
                 params: ["business_id", "title", "body"]
+            },
+
+            {
+                name: "createUser",
+                test: true,
+                params: ["email", "password", "first_name", "last_name", "phone_number", "country", "city", "address"]
+            },
+
+            {
+                name: "createBusiness",
+                test: true,
+                params: ["user_id", "name", "description", "phone_number", "country", "city", "address"]
+            },
+
+            {
+                name: "createProduct",
+                test: true,
+                params: ["business_id", "name", "description", "price", "photo"]
+            },
+
+            {
+                name: "createBooking",
+                test: true,
+                params: ["product_id", "duration", "price"]
+            },
+
+            {
+                name: "createProductBooking",
+                test: true,
+                params: ["booking_id", "user_id", "start_time", "status"]
+            },
+
+            {
+                name: "createReview",
+                test: true,
+                params: ["business_id", "user_id", "title", "body"]
             }
 
         ]);

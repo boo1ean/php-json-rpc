@@ -173,4 +173,29 @@ class Methods
             throw new \Exception('Unauthorized.');
         }
     }
+
+    // @codeCoverageIgnoreStart
+    public function createUser($p) {
+        return \App\Model\User::create($p)->attributes();
+    }
+
+    public function createBusiness($p) {
+        return \App\Model\Business::create($p)->attributes();
+    }
+
+    public function createProduct($p) {
+        return \App\Model\Product::create($p)->attributes();
+    }
+
+    public function createBooking($p) {
+        return \App\Model\Booking::create($p)->attributes();
+    }
+
+    public function createProductBooking($p) {
+        return \App\Model\ProductBooking::create($p)->attributes();
+    }
+
+    public function createReview($p) {
+        return \App\Model\Review::create($p)->attributes();
+    }
 }
