@@ -10,11 +10,14 @@ use App\Model\ProductBooking as ProductBookingModel;
 class Booking extends Service
 {
     public function validation() {
+        $format = $this->container['config']['date_format'];
+        $from   = date_create()->format($format);
+        $to     = date_create()->add(new \DateInterval('P5Y'))->format($format);
         return array(
             'requestBooking' => array(
                 'user_id'    => v::notEmpty()->int()->positive(),
                 'booking_id' => v::notEmpty()->int()->positive(),
-                'start_time' => v::notEmpty()->date($this->container['config']['date_format'])
+                'start_time' => v::notEmpty()->date($format)->between($from, $to)
             )
         );
     }

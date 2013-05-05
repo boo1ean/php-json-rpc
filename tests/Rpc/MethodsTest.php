@@ -309,7 +309,8 @@ class MethodsTest extends TestCase
         $product  = $this->createProduct($business->id);
         $booking  = $this->createBooking($product->id);
 
-        $time   = new \DateTime('NOW');
+        $time = new \DateTime('NOW');
+        $time->add(new \DateInterval("PT1M"));
         $params = array(
             'booking_id' => $booking->id,
             'start_time' => $time->format($this->container['config']['date_format'])

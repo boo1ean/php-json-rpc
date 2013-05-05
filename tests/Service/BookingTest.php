@@ -7,6 +7,7 @@ class BookingTest extends TestCase
         parent::__construct();
 
         $time = new DateTime('NOW');
+        $time->add(new DateInterval('PT1M'));
         $this->_p = array('start_time' => $time->format($this->container['config']['date_format']));
     }
 
