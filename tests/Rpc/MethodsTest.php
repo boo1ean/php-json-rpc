@@ -351,9 +351,41 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'businesses')));
         $this->assertTrue(is_callable(array($method, 'addReview')));
         $this->assertTrue(is_callable(array($method, 'book')));
+        $this->assertTrue(is_callable(array($method, 'productStatus')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));
+    }
+
+    public function testProductStatus() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $product  = $this->createProduct($business->id);
+        $booking  = $this->createBooking($product->id);
+
+        $this->createProductBooking($user->id, $booking->id);
+        $this->createProductBooking($user->id, $booking->id);
+        $this->createProductBooking($user->id, $booking->id);
+
+        $params = array(
+            'product_id' => $product->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'productStatus',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $status = $response->result;
+
+        $this->assertNotEmpty($status);
+        $this->assertInternalType('array', $status);
+        $this->assertCount(3, $status);
     }
 
     public function testComposeRequestHelper() {

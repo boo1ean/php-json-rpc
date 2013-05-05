@@ -86,4 +86,35 @@ class ProductService extends TestCase
             $this->assertCount(3, $product->bookings);
         }
     }
+
+    public function testProductStatus() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $product  = $this->createProduct($business->id);
+        $booking  = $this->createBooking($product->id);
+
+        $time = new DateTime('NOW');
+        $time->add(new DateInterval('P1M'));
+        $p = array(
+            'user_id'    => $user->id,
+            'booking_id' => $booking->id,
+            'start_time' => $time->format(DateTime::ISO8601)
+        );
+
+        $bookingProduct = $this->container['booking-service']->requestBooking($p);
+        $this->assertNotEmpty($bookingProduct);
+
+        $time->add(new DateInterval('P1M'));
+        $p['start_time'] = $time->format(DateTime::ISO8601);
+        $bookingProduct = $this->container['booking-service']->requestBooking($p);
+        $this->assertNotEmpty($bookingProduct);
+
+        $status = $this->container['product-service']->productStatus(array('product_id' => $product->id));
+        $this->assertNotEmpty($status);
+        $this->assertInternalType('array', $status);
+        $this->assertCount(2, $status);
+
+        $this->assertEquals($status[0]['duration'], $booking->duration);
+        $this->assertEquals($status[1]['duration'], $booking->duration);
+    }
 }
