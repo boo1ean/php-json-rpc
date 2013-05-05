@@ -3,7 +3,7 @@ namespace App\Model;
 class Business extends \ActiveRecord\Model
 {
     public static $belongs_to = array(
-        array('user', 'readonly' => true)
+        array('user')
     );
 
     public static $has_many = array(

@@ -8,6 +8,7 @@ use App\Model\Booking;
 use App\Model\ProductBooking;
 use App\Model\Review;
 
+// @codeCoverageIgnoreStart
 class Fixtures
 {
     const DEFAULT_PASSWORD   = 'test';

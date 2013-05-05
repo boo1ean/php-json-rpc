@@ -68,4 +68,30 @@ class User extends \ActiveRecord\Model
         $params = array(ProductBooking::PENDING, $this->id);
         return $conn->query($sql, $params)->fetchAll();
     }
+
+    /**
+     * Check if user able to update specified entity
+     *
+     * @param object $entity
+     * @return bool
+     */
+    public function isAbleToUpdate($entity) {
+        switch (true) {
+            case ($entity instanceof \App\Model\ProductBooking):
+                return $this->isAbleToUpdateProductBooking();
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Checks if user is able to update product booking
+     *
+     * @return bool
+     */
+    protected function isAbleToUpdateProductBooking($productBooking) {
+        $owner = $productBooking->booking->product->business->user;
+        return $owner->id === $this->id;
+    }
 }

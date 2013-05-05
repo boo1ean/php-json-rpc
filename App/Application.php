@@ -2,6 +2,7 @@
 namespace App;
 
 // TODO add uses
+// @codeCoverageIgnoreStart
 class Application
 {
     const V2 = '/v2';

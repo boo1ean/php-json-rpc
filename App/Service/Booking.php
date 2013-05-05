@@ -18,6 +18,11 @@ class Booking extends Service
                 'user_id'    => v::notEmpty()->int()->positive(),
                 'booking_id' => v::notEmpty()->int()->positive(),
                 'start_time' => v::notEmpty()->between($from, $to)
+            ),
+
+            'approveBooking' => array(
+                'user_id'            => v::notEmpty()->int()->positive(),
+                'product_booking_id' => v::notEmpty()->int()->positive()
             )
         );
     }
@@ -64,5 +69,29 @@ class Booking extends Service
         }
 
         return $user->getPendingBookings();
+    }
+
+    /**
+     * @param integer $user_id business owner id
+     * @param integer $product_booking_id
+     */
+    protected function _approveBooking($p) {
+        try {
+            $user = UserModel::find($p['user_id']);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
+        }
+
+        try {
+            $productBooking = ProductBookingModel::find($p['product_booking_id']);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Product booking with id {$p['product_booking_id']} doesn't exist.");
+        }
+
+        if (!$user->isAbleToUpdate($productBooking)) {
+            throw new \Exception("User with id {$p['user_id']} doesn't have enough permissions.");
+        }
+
+        return $productBooking->approve();
     }
 }

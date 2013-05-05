@@ -145,6 +145,15 @@ class Methods
     }
 
     /**
+     * Approve bookings product
+     */
+    public function approveBooking($p) {
+        $this->checkSession();
+        $p['user_id'] = $this->c['user']->id;
+        return $this->c['booking-service']->approveBooking($p);
+    }
+
+    /**
      * Serialize array of activerecords to array of objects
      *
      * @param array $models array of models

@@ -1,4 +1,6 @@
-<?php return array(
+<?php
+// @codeCoverageIgnoreStart
+return array(
     'db' => array(
         'connections' => array(
             'development' => 'mysql://car_business:car_business@localhost/car_business',

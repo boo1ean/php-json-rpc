@@ -1,5 +1,7 @@
 <?php
 namespace App\Rpc;
+
+// @codeCoverageIgnoreStart
 class MethodsV2 extends Methods
 {
     public function businesses($p = array()) {
