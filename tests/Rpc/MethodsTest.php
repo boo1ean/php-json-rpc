@@ -340,6 +340,56 @@ class MethodsTest extends TestCase
         $this->assertEquals($productBooking->booking_id, $this->booking->id);
     }
 
+    public function testPendingBookings() {
+        $this->prepareBooking();
+
+        $user = $this->createUser();
+        $this->createProductBooking($user->id, $this->booking->id);
+        $this->createProductBooking($user->id, $this->booking->id);
+
+        $request = $this->composeRequest(array(
+            'method' => 'pendingBookings'
+        ));
+
+        $this->container['user'] = $this->user;
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $bookings = $response->result;
+        $this->assertCount(2, $bookings);
+    }
+
+    public function testNoPendingBookings() {
+        $this->prepareBooking();
+
+        $user = $this->createUser();
+        $this->createProductBooking($user->id, $this->booking->id);
+        $this->createProductBooking($user->id, $this->booking->id);
+
+        $request = $this->composeRequest(array(
+            'method' => 'pendingBookings'
+        ));
+
+        $this->container['user'] = $user;
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $bookings = $response->result;
+        $this->assertCount(0, $bookings);
+    }
+
+    public function testPendingBookingUnauthorized() {
+        $request = $this->composeRequest(array(
+            'method' => 'pendingBookings'
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertObjectHasAttribute('error', $response);
+    }
+
     public function testIsProductAvailable() {
         $this->prepareBooking();
         $time = date_create()
@@ -374,6 +424,7 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'book')));
         $this->assertTrue(is_callable(array($method, 'productStatus')));
         $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
+        $this->assertTrue(is_callable(array($method, 'pendingBookings')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));

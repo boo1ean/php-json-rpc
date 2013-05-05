@@ -105,4 +105,29 @@ class BookingTest extends TestCase
         $p['start_time'] = date_create()->format($this->container['config']['date_format']);
         $this->container['booking-service']->requestBooking($p);
     }
+
+    public function testGetPendingBookings() {
+        $p = array('user_id' => $this->user->id);
+        $bookings = $this->container['booking-service']->pendingBookings($p);
+        $this->assertInternalType('array', $bookings);
+        $this->assertEmpty($bookings);
+
+        $user = $this->createUser();
+        $this->createProductBooking($user->id, $this->booking->id);
+        $bookings = $this->container['booking-service']->pendingBookings($p);
+        $this->assertCount(1, $bookings);
+
+        $this->createProductBooking($user->id, $this->booking->id);
+        $this->createProductBooking($user->id, $this->booking->id);
+        $bookings = $this->container['booking-service']->pendingBookings($p);
+        $this->assertCount(3, $bookings);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testInvalidUserPendingBookings() {
+        $p = array('user_id' => 345345);
+        $bookings = $this->container['booking-service']->pendingBookings($p);
+    }
 }
