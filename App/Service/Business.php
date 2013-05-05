@@ -29,4 +29,8 @@ class Business extends Service
         $businesses = Model::find('all', $options);
         return $businesses;
     }
+
+    protected function _topBusinesses() {
+        return Model::topByProductBookings(10);
+    }
 }

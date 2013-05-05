@@ -484,6 +484,21 @@ class MethodsTest extends TestCase
         $this->assertEquals($pb->status, \App\Model\ProductBooking::REJECTED);
     }
 
+    public function testTopBusinesses() {
+        $this->prepareBooking();
+        $this->createProductBooking($this->user->id, $this->booking->id);
+
+        $request = $this->composeRequest(array(
+            'method' => 'topBusinesses'
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+        $this->assertCount(1, $response->result);
+    }
+
     public function testProductStatus() {
         $user     = $this->createUser();
         $business = $this->createBusiness($user->id);

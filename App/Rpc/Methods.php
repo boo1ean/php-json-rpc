@@ -165,6 +165,13 @@ class Methods
     }
 
     /**
+     * Get top 10 businesses
+     */
+    public function topBusinesses() {
+        return $this->c['business-service']->topBusinesses();
+    }
+
+    /**
      * Serialize array of activerecords to array of objects
      *
      * @param array $models array of models

@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `businesses` (
     `country`      VARCHAR(80)  NOT NULL DEFAULT '',
     `city`         VARCHAR(80)  NOT NULL DEFAULT '',
     `address`      VARCHAR(255) NOT NULL,
+    `photo`        VARCHAR(255),
     PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;

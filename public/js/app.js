@@ -197,6 +197,11 @@ window.app = (function($, Backbone, _) {
             },
 
             {
+                name: "topBusinesses"
+            },
+
+
+            {
                 name: "products",
                 params: ["business_id", "page", "rpp", "include_bookings"]
             },

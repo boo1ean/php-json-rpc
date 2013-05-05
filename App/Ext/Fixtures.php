@@ -78,7 +78,12 @@ class Fixtures
         $p = array_merge(array(
             'user_id'      => $user_id,
             'name'         => $this->faker->company,
-            'phone_number' => $this->faker->phoneNumber
+            'phone_number' => $this->faker->phoneNumber,
+            'country'      => $this->faker->country,
+            'city'         => $this->faker->city,
+            'address'      => $this->faker->address,
+            'description'  => $this->faker->text,
+            'photo'        => $this->faker->url
         ), $p);
 
         $this->log("Business created: user_id={$p['user_id']}, {$p['name']}");
