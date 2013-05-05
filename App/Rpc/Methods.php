@@ -129,6 +129,13 @@ class Methods
     }
 
     /**
+     * Return product availability status at specified time for specified duration
+     */
+    public function isProductAvailable($p) {
+        return $this->c['product-service']->isProductAvailable($p);
+    }
+
+    /**
      * Serialize array of activerecords to array of objects
      *
      * @param array $models array of models

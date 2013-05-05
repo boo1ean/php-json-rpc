@@ -98,14 +98,14 @@ class ProductService extends TestCase
         $p = array(
             'user_id'    => $user->id,
             'booking_id' => $booking->id,
-            'start_time' => $time->format(DateTime::ISO8601)
+            'start_time' => $time->format($this->container['config']['date_format'])
         );
 
         $bookingProduct = $this->container['booking-service']->requestBooking($p);
         $this->assertNotEmpty($bookingProduct);
 
         $time->add(new DateInterval('P1M'));
-        $p['start_time'] = $time->format(DateTime::ISO8601);
+        $p['start_time'] = $time->format($this->container['config']['date_format']);
         $bookingProduct = $this->container['booking-service']->requestBooking($p);
         $this->assertNotEmpty($bookingProduct);
 

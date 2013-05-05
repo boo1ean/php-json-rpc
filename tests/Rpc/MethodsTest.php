@@ -312,7 +312,7 @@ class MethodsTest extends TestCase
         $time   = new \DateTime('NOW');
         $params = array(
             'booking_id' => $booking->id,
-            'start_time' => $time->format(\DateTime::ISO8601)
+            'start_time' => $time->format($this->container['config']['date_format'])
         );
 
         $request = $this->composeRequest(array(
@@ -352,6 +352,7 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'addReview')));
         $this->assertTrue(is_callable(array($method, 'book')));
         $this->assertTrue(is_callable(array($method, 'productStatus')));
+        $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));

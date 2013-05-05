@@ -5,5 +5,7 @@
             'test'        => 'mysql://car_business:car_business@localhost/car_business',
             'production'  => 'mysql://car_business:car_business@localhost/car_business'
         )
-    )
+    ),
+
+    'date_format' => DateTime::W3C
 );

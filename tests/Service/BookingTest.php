@@ -7,7 +7,7 @@ class BookingTest extends TestCase
         parent::__construct();
 
         $time = new DateTime('NOW');
-        $this->_p = array('start_time' => $time->format(DateTime::ISO8601));
+        $this->_p = array('start_time' => $time->format($this->container['config']['date_format']));
     }
 
     public function setUp() {

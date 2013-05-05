@@ -11,6 +11,10 @@ class Product extends Service
     const MAX_RPP = 31;
 
     public function validation() {
+        $format = $this->container['config']['date_format'];
+        $from   = date_create()->format($format);
+        $to     = date_create()->add(new \DateInterval('P5Y'))->format($format);
+
         return array(
             'getProducts' => array(
                 'business_id' => v::notEmpty()->int()->positive(),
@@ -20,6 +24,12 @@ class Product extends Service
 
             'productStatus' => array(
                 'product_id' => v::notEmpty()->int()->positive()
+            ),
+
+            'isProductAvailable' => array(
+                'product_id' => v::notEmpty()->int()->positive(),
+                'time'       => v::notEmpty()->date($format)->between($from, $to),
+                'duration'   => v::notEmpty()->int()->positive()
             )
         );
     }
@@ -55,5 +65,16 @@ class Product extends Service
         }
 
         return $product->statusReport();
+    }
+
+    /**
+     * Check is product with specified id is available
+     *
+     * @param integer $product_id
+     * @return bool availability status
+     */
+    protected function _isProductAvailable($p) {
+        $report = $this->_productStatus($p);
+        return $report;
     }
 }

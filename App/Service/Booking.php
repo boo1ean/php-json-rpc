@@ -14,7 +14,7 @@ class Booking extends Service
             'requestBooking' => array(
                 'user_id'    => v::notEmpty()->int()->positive(),
                 'booking_id' => v::notEmpty()->int()->positive(),
-                'start_time' => v::notEmpty()->date(\DateTime::ISO8601)
+                'start_time' => v::notEmpty()->date($this->container['config']['date_format'])
             )
         );
     }
@@ -24,7 +24,7 @@ class Booking extends Service
      *
      * @param integer $user_id
      * @param integer $booking_id
-     * @param string  $start_time ISO8601 format
+     * @param string  $start_time W3C format
      */
     protected function _requestBooking($p) {
         // TODO Check if available

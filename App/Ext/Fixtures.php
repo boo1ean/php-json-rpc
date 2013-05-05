@@ -21,6 +21,7 @@ class Fixtures
     public function __construct($silent = true) {
         $this->faker  = \Faker\Factory::create();
         $this->silent = $silent;
+        $this->date_format = \DateTime::W3C;
     }
 
     /**
@@ -199,7 +200,7 @@ class Fixtures
         $p = array_merge(array(
             'user_id'    => $user_id,
             'booking_id' => $booking_id,
-            'start_time' => $time->format(\DateTime::ISO8601)
+            'start_time' => $time->format($this->date_format)
         ), $p);
 
         $this->log("ProductBooking created: booking_id={$p['booking_id']} user_id{$p['user_id']} {$p['start_time']}");
