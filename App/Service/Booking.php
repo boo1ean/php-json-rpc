@@ -20,9 +20,14 @@ class Booking extends Service
                 'start_time' => v::notEmpty()->between($from, $to)
             ),
 
-            'approveBooking' => array(
+            'setBookingStatus' => array(
                 'user_id'            => v::notEmpty()->int()->positive(),
-                'product_booking_id' => v::notEmpty()->int()->positive()
+                'product_booking_id' => v::notEmpty()->int()->positive(),
+                'status'             => v::notEmpty()->string()->in(array(
+                    ProductBookingModel::APPROVED,
+                    ProductBookingModel::REJECTED,
+                    ProductBookingModel::PENDING
+                ))
             )
         );
     }
@@ -74,8 +79,9 @@ class Booking extends Service
     /**
      * @param integer $user_id business owner id
      * @param integer $product_booking_id
+     * @param string  $status product booking status
      */
-    protected function _approveBooking($p) {
+    protected function _setBookingStatus($p) {
         try {
             $user = UserModel::find($p['user_id']);
         } catch (\Exception $e) {
@@ -92,6 +98,11 @@ class Booking extends Service
             throw new \Exception("User with id {$p['user_id']} doesn't have enough permissions.");
         }
 
-        return $productBooking->approve();
+        $productBooking->status = $p['status'];
+        if (!$productBooking->save()) {
+            throw new \Exception('Cann\'t update product booking status.');
+        }
+
+        return $productBooking;
     }
 }

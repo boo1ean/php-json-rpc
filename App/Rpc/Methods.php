@@ -150,7 +150,18 @@ class Methods
     public function approveBooking($p) {
         $this->checkSession();
         $p['user_id'] = $this->c['user']->id;
-        return $this->c['booking-service']->approveBooking($p)->attributes();
+        $p['status']  = \App\Model\ProductBooking::APPROVED;
+        return $this->c['booking-service']->setBookingStatus($p)->attributes();
+    }
+
+    /**
+     * Reject bookings product
+     */
+    public function rejectBooking($p) {
+        $this->checkSession();
+        $p['user_id'] = $this->c['user']->id;
+        $p['status']  = \App\Model\ProductBooking::REJECTED;
+        return $this->c['booking-service']->setBookingStatus($p)->attributes();
     }
 
     /**

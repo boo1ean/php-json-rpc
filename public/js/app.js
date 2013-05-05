@@ -221,6 +221,16 @@ window.app = (function($, Backbone, _) {
             },
 
             {
+                name: "approveBooking",
+                params: ["product_booking_id"]
+            },
+
+            {
+                name: "rejectBooking",
+                params: ["product_booking_id"]
+            },
+
+            {
                 name: "addReview",
                 params: ["business_id", "title", "body"]
             },
