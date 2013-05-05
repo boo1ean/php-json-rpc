@@ -4,6 +4,8 @@ namespace App;
 // TODO add uses
 class Application
 {
+    const V2 = '/v2';
+
     /**
      * Config array
      */
@@ -13,6 +15,11 @@ class Application
      * DI container
      */
     protected $container;
+
+    /**
+     * Request query string
+     */
+    protected $query = '';
 
     /**
      * @param array config application config array
@@ -36,6 +43,10 @@ class Application
      * @return void
      */
     public function setup() {
+        if (!empty($_SERVER['REQUEST_URI'])) {
+            $this->query = $_SERVER['REQUEST_URI'];
+        }
+
         $this->setupDb();
         $this->setupContainer();
         return $this;
@@ -66,10 +77,16 @@ class Application
     protected function setupContainer() {
         $this->container = new \Pimple();
 
+        if (self::V2 == $this->query) {
+            $this->container['rpc-methods-class'] = '\\App\\Rpc\\MethodsV2';
+        } else {
+            $this->container['rpc-methods-class'] = '\\App\\Rpc\\Methods';
+        }
+
         $this->container['config'] = $this->config;
 
-        $this->container['rpc-methods'] = function($c) {
-            return new \App\Rpc\Methods($c);
+        $this->container['rpc-methods'] = function($c){
+            return new $c['rpc-methods-class']($c);
         };
 
         $this->container['json-rpc-server'] = $this->container->share(function($c) {
