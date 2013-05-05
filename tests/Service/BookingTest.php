@@ -96,4 +96,13 @@ class BookingTest extends TestCase
         $p['booking_id'] = 3948384;
         $this->container['booking-service']->requestBooking($p);
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testBookingInPast() {
+        $p = $this->p;
+        $p['start_time'] = date_create()->format($this->container['config']['date_format']);
+        $this->container['booking-service']->requestBooking($p);
+    }
 }

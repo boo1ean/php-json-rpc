@@ -126,4 +126,17 @@ class ProductService extends TestCase
         $this->container['product-service']->productStatus($p);
     }
 
+    /**
+     * @expectedException Exception
+     */
+    public function testIsProductAvailableInPast() {
+        $p = array(
+            'product_id' => 1,
+            'duration'   => 100,
+            'time'       => date_create()->format($this->container['config']['date_format'])
+        );
+
+        $this->container['product-service']->isProductAvailable($p);
+    }
+
 }
