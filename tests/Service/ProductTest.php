@@ -117,4 +117,13 @@ class ProductService extends TestCase
         $this->assertEquals($status[0]['duration'], $booking->duration);
         $this->assertEquals($status[1]['duration'], $booking->duration);
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testProductNotFound() {
+        $p = array('product_id' => 3948384);
+        $this->container['product-service']->productStatus($p);
+    }
+
 }
