@@ -5,6 +5,7 @@ use App\Model\User;
 use App\Model\Business;
 use App\Model\Product;
 use App\Model\Booking;
+use App\Model\ProductBooking;
 use App\Model\Review;
 
 class Fixtures
@@ -40,8 +41,8 @@ class Fixtures
      * Creates user
      * @return App\Model\Business
      */
-    public function createUser($arguments = array()) {
-        $p = array(
+    public function createUser($p = array()) {
+        $p = array_merge(array(
             'email'        => $this->faker->email,
             'password'     => self::DEFAULT_PASSWORD,
             'first_name'   => $this->faker->firstName,
@@ -50,9 +51,7 @@ class Fixtures
             'phone_number' => $this->faker->phoneNumber,
             'city'         => $this->faker->city,
             'address'      => $this->faker->address
-        );
-
-        $p = array_merge($p, $arguments);
+        ), $p);
 
         $this->log("User created: {$p['first_name']} {$p['last_name']} {$p['email']}");
         return User::create($p);
@@ -189,6 +188,24 @@ class Fixtures
     }
 
     /**
+     * Create single product booking record
+     *
+     * @param $user_id
+     * @param $booking_id
+     */
+    public function createProductBooking($user_id, $booking_id, $p = array()) {
+        $time = $this->faker->dateTimeThisMonth;
+        $p = array_merge(array(
+            'user_id'    => $user_id,
+            'booking_id' => $booking_id,
+            'start_time' => $time->format(\DateTime::ISO8601)
+        ), $p);
+
+        $this->log("ProductBooking created: booking_id={$p['booking_id']} user_id{$p['user_id']} {$p['start_time']}");
+        return ProductBooking::create($p);
+    }
+
+    /**
      * Create bunch of products for specified business
      *
      * @param integer $business_id
@@ -221,10 +238,12 @@ class Fixtures
             $this->createProducts($business->id, $count);
         }
 
+        $user = User::first();
         $products = Product::find('all');
         foreach ($products as $product) {
-            $count = $this->bookingsCount();
-            $this->createBookings($product->id, $count);
+            $count   = $this->bookingsCount();
+            $bookings = $this->createBookings($product->id, $count);
+            $this->createProductBooking($user->id, $bookings[0]->id);
         }
     }
 

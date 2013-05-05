@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `product_bookings` (
     `booking_id` INT(11)  NOT NULL,
     `user_id`    INT(11)  NOT NULL,
     `start_time` DATETIME NOT NULL,
+    `status`     ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
     PRIMARY KEY (`id`),
     FOREIGN KEY (`booking_id`) REFERENCES `bookings`(`id`),
     FOREIGN KEY (`user_id`)    REFERENCES `users`(`id`)
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `product_bookings` (
 
 CREATE TABLE IF NOT EXISTS `reviews` (
     `id`       INT(11)      NOT NULL AUTO_INCREMENT,
-    `business_id` INT(11)      NOT NULL,
+    `business_id` INT(11)   NOT NULL,
     `user_id`  INT(11)      NOT NULL,
     `title`    VARCHAR(255) NOT NULL DEFAULT '',
     `body`     TEXT         NOT NULL DEFAULT '',

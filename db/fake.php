@@ -20,5 +20,5 @@ $app    = new App\Application($config);
 
 $app->setup();
 
-$generator = new App\Ext\Fixtures;
+$generator = new App\Ext\Fixtures(false);
 $generator->createDefaultDataSet();
