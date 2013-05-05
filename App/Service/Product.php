@@ -75,18 +75,16 @@ class Product extends Service
      * @return bool availability status
      */
     protected function _isProductAvailable($p) {
-        $report = $this->_productStatus($p);
+        $options = array(
+            'conditions' => array('id = ? AND product_id = ?', $p['booking_id'], $p['product_id'])
+        );
 
-        try {
-            $options = array(
-                'conditions' => array('product_id = ?', $p['product_id'])
-            );
-
-            $booking = BookingModel::find($p['booking_id'], $options);
-        } catch (\Exception $e) {
+        $booking = BookingModel::find('first', $options);
+        if (is_null($booking)) {
             throw new \InvalidArgumentException("Booking with id {$p['booking_id']} for specified product doesn't exist");
         }
 
+        $report = $this->_productStatus($p);
         $time = \DateTime::createFromFormat($this->container['config']['date_format'], $p['start_time']);
         $requestedTime = array(
             'start' => $time->getTimestamp(),

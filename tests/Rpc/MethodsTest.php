@@ -304,15 +304,12 @@ class MethodsTest extends TestCase
     }
 
     public function testBookMethod() {
-        $user     = $this->createUser();
-        $business = $this->createBusiness($user->id);
-        $product  = $this->createProduct($business->id);
-        $booking  = $this->createBooking($product->id);
+        $this->prepareBooking();
 
         $time = new \DateTime('NOW');
         $time->add(new \DateInterval("PT1M"));
         $params = array(
-            'booking_id' => $booking->id,
+            'booking_id' => $this->booking->id,
             'start_time' => $time->format($this->container['config']['date_format'])
         );
 
@@ -326,7 +323,7 @@ class MethodsTest extends TestCase
         $response = json_decode($response);
 
         $this->assertObjectHasAttribute('error', $response);
-        $this->container['user'] = $user;
+        $this->container['user'] = $this->user;
 
         $request = $this->composeRequest(array(
             'method' => 'book',
@@ -339,8 +336,31 @@ class MethodsTest extends TestCase
         $this->assertObjectHasAttribute('result', $response);
         $productBooking = $response->result;
 
-        $this->assertEquals($productBooking->user_id, $user->id);
-        $this->assertEquals($productBooking->booking_id, $booking->id);
+        $this->assertEquals($productBooking->user_id, $this->user->id);
+        $this->assertEquals($productBooking->booking_id, $this->booking->id);
+    }
+
+    public function testIsProductAvailable() {
+        $this->prepareBooking();
+        $time = date_create()
+            ->add(new DateInterval('P1M'))
+            ->format($this->container['config']['date_format']);
+
+        $params = array(
+            'product_id' => $this->product->id,
+            'booking_id' => $this->booking->id,
+            'start_time' => $time
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'isProductAvailable',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertTrue($response->result);
     }
 
     public function testRpcInterface() {
@@ -428,5 +448,12 @@ class MethodsTest extends TestCase
     protected function composeRequest($fields = array()) {
         $request = array_merge($this->request, $fields);
         return $this->server->makeRequest(json_encode($request));
+    }
+
+    private function prepareBooking() {
+        $this->user     = $this->createUser();
+        $this->business = $this->createBusiness($this->user->id);
+        $this->product  = $this->createProduct($this->business->id);
+        $this->booking  = $this->createBooking($this->product->id);
     }
 }

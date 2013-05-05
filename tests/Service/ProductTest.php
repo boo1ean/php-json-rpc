@@ -1,6 +1,8 @@
 <?php
 class ProductService extends TestCase
 {
+    private $user, $business, $product, $booking;
+
     public $p = array(
         'rpp'              => 30,
         'page'             => 1,
@@ -88,16 +90,13 @@ class ProductService extends TestCase
     }
 
     public function testProductStatus() {
-        $user     = $this->createUser();
-        $business = $this->createBusiness($user->id);
-        $product  = $this->createProduct($business->id);
-        $booking  = $this->createBooking($product->id);
+        $this->prepareBooking();
 
         $time = new DateTime('NOW');
         $time->add(new DateInterval('P1M'));
         $p = array(
-            'user_id'    => $user->id,
-            'booking_id' => $booking->id,
+            'user_id'    => $this->user->id,
+            'booking_id' => $this->booking->id,
             'start_time' => $time->format($this->container['config']['date_format'])
         );
 
@@ -109,13 +108,13 @@ class ProductService extends TestCase
         $bookingProduct = $this->container['booking-service']->requestBooking($p);
         $this->assertNotEmpty($bookingProduct);
 
-        $status = $this->container['product-service']->productStatus(array('product_id' => $product->id));
+        $status = $this->container['product-service']->productStatus(array('product_id' => $this->product->id));
         $this->assertNotEmpty($status);
         $this->assertInternalType('array', $status);
         $this->assertCount(2, $status);
 
-        $this->assertEquals($status[0]['duration'], $booking->duration);
-        $this->assertEquals($status[1]['duration'], $booking->duration);
+        $this->assertEquals($status[0]['duration'], $this->booking->duration);
+        $this->assertEquals($status[1]['duration'], $this->booking->duration);
     }
 
     /**
@@ -132,11 +131,58 @@ class ProductService extends TestCase
     public function testIsProductAvailableInPast() {
         $p = array(
             'product_id' => 1,
-            'duration'   => 100,
-            'time'       => date_create()->format($this->container['config']['date_format'])
+            'product_id' => 100,
+            'start_time' => date_create()->format($this->container['config']['date_format'])
         );
 
         $this->container['product-service']->isProductAvailable($p);
     }
 
+    public function testIsProductAvailable() {
+        $this->prepareBooking();
+        $time = date_create()
+            ->add(new DateInterval('P1M'))
+            ->format($this->container['config']['date_format']);
+
+        $p = array(
+            'product_id' => $this->product->id,
+            'booking_id' => $this->booking->id,
+            'start_time' => $time
+        );
+
+        $result = $this->container['product-service']->isProductAvailable($p);
+        $this->assertTrue($result);
+
+        $this->createProductBooking($this->user->id, $this->booking->id, array(
+            'start_time' => $time
+        ));
+
+        $result = $this->container['product-service']->isProductAvailable($p);
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testInvalidBookingIsAvailable() {
+        $this->prepareBooking();
+        $time = date_create()
+            ->add(new DateInterval('P1M'))
+            ->format($this->container['config']['date_format']);
+
+        $p = array(
+            'product_id' => $this->product->id,
+            'booking_id' => $this->booking->id + 1,
+            'start_time' => $time
+        );
+
+        $result = $this->container['product-service']->isProductAvailable($p);
+    }
+
+    private function prepareBooking() {
+        $this->user     = $this->createUser();
+        $this->business = $this->createBusiness($this->user->id);
+        $this->product  = $this->createProduct($this->business->id);
+        $this->booking  = $this->createBooking($this->product->id);
+    }
 }
