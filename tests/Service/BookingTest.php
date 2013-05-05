@@ -140,4 +140,93 @@ class BookingTest extends TestCase
         ));
         $this->container['booking-service']->requestBooking($this->p);
     }
+
+    public function testSetBookingStatus(){
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::REJECTED;
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => $this->user->id,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+        $this->assertEquals($result->status, $status);
+
+        $status = \App\Model\ProductBooking::APPROVED;
+        $p['status'] = $status;
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetBookingStatusInvalidUserId() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::REJECTED;
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => 2342423,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetBookingStatusProductBookingId() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::REJECTED;
+        $p = array(
+            'product_booking_id' => 2432342,
+            'user_id'            => $this->user->id,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetBookingStatusInvalidStatus() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => $this->user->id,
+            'status'             => 'wtf'
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetBookingStatusDontHavePermissions() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::REJECTED;
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => $user->id,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+    }
+
 }

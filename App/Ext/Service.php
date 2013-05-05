@@ -1,6 +1,8 @@
 <?php
 namespace App\Ext;
 
+// @codeCoverageIgnoreStart
+
 /**
  * Base service class
  */

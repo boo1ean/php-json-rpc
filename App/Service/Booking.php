@@ -99,9 +99,7 @@ class Booking extends Service
         }
 
         $productBooking->status = $p['status'];
-        if (!$productBooking->save()) {
-            throw new \Exception('Cann\'t update product booking status.');
-        }
+        $productBooking->save();
 
         return $productBooking;
     }

@@ -426,6 +426,7 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
         $this->assertTrue(is_callable(array($method, 'pendingBookings')));
         $this->assertTrue(is_callable(array($method, 'approveBooking')));
+        $this->assertTrue(is_callable(array($method, 'rejectBooking')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));
@@ -455,6 +456,32 @@ class MethodsTest extends TestCase
 
         $pb = $response->result;
         $this->assertEquals($pb->status, \App\Model\ProductBooking::APPROVED);
+    }
+
+    public function testReject() {
+        $this->prepareBooking();
+        $user = $this->createUser();
+        $productBooking = $this->createProductBooking($user->id, $this->booking->id);
+
+        $params = array(
+            'product_booking_id' => $productBooking->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'rejectBooking',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $this->user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductBooking::REJECTED);
     }
 
     public function testProductStatus() {
