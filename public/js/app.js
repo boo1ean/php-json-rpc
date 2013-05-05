@@ -203,6 +203,11 @@ window.app = (function($, Backbone, _) {
             },
 
             {
+                name: "isProductAvailable",
+                params: ["product_id", "booking_id", "start_time"]
+            },
+
+            {
                 name: "addReview",
                 params: ["business_id", "title", "body"]
             }

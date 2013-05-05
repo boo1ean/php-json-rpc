@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Ext\Service;
 use Respect\Validation\Validator as v;
 use App\Model\Product as Model;
+use App\Model\Booking as BookingModel;
 
 class Product extends Service
 {
@@ -28,8 +29,8 @@ class Product extends Service
 
             'isProductAvailable' => array(
                 'product_id' => v::notEmpty()->int()->positive(),
-                'time'       => v::notEmpty()->date($format)->between($from, $to),
-                'duration'   => v::notEmpty()->int()->positive()
+                'booking_id' => v::notEmpty()->int()->positive(),
+                'start_time' => v::notEmpty()->between($from, $to)
             )
         );
     }
@@ -75,6 +76,41 @@ class Product extends Service
      */
     protected function _isProductAvailable($p) {
         $report = $this->_productStatus($p);
-        return $report;
+
+        try {
+            $options = array(
+                'conditions' => array('product_id = ?', $p['product_id'])
+            );
+
+            $booking = BookingModel::find($p['booking_id'], $options);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Booking with id {$p['booking_id']} for specified product doesn't exist");
+        }
+
+        $time = \DateTime::createFromFormat($this->container['config']['date_format'], $p['start_time']);
+        $requestedTime = array(
+            'start' => $time->getTimestamp(),
+            'end'   => $time->add(new \DateInterval("PT{$booking->duration}M"))->getTimestamp()
+        );
+
+        $available = true;
+        foreach ($report as $booking) {
+            $bookedTime = array(
+                'start' => date_create($booking['start_time'])->getTimestamp(),
+                'end'   => date_create($booking['start_time'])->add(new \DateInterval("PT{$booking['duration']}M"))->getTimestamp()
+            );
+
+            if ($this->intersection($requestedTime, $bookedTime)) {
+                $available = false;
+                break;
+            }
+        }
+
+        return $available;
+    }
+
+    private function intersection($first, $second) {
+        return $first['start'] >= $second['start'] && $first['start'] <= $second['end'] ||
+               $first['end'] >= $second['start'] && $first['end'] <= $second['end'];
     }
 }
