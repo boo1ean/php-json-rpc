@@ -17,7 +17,7 @@ class Booking extends Service
             'requestBooking' => array(
                 'user_id'    => v::notEmpty()->int()->positive(),
                 'booking_id' => v::notEmpty()->int()->positive(),
-                'start_time' => v::notEmpty()->date($format)->between($from, $to)
+                'start_time' => v::notEmpty()->between($from, $to)
             )
         );
     }
@@ -30,10 +30,8 @@ class Booking extends Service
      * @param string  $start_time W3C format
      */
     protected function _requestBooking($p) {
-        // TODO Check if available
-
         try {
-            BookingModel::find($p['booking_id']);
+            $booking = BookingModel::find($p['booking_id']);
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("Booking with id {$p['booking_id']} doesn't exist.");
         }
@@ -43,6 +41,12 @@ class Booking extends Service
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
         }
+
+        $p['product_id'] = $booking->product->id;
+        if (!$this->container['product-service']->isProductAvailable($p)) {
+            throw new \Exception('Product is not available for booking during this period.');
+        }
+        unset($p['product_id']);
 
         return ProductBookingModel::create($p);
     }

@@ -130,4 +130,14 @@ class BookingTest extends TestCase
         $p = array('user_id' => 345345);
         $bookings = $this->container['booking-service']->pendingBookings($p);
     }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testRequestBookingUnavailable() {
+        $this->createProductBooking($this->user->id, $this->booking->id, array(
+            'start_time' => $this->p['start_time']
+        ));
+        $this->container['booking-service']->requestBooking($this->p);
+    }
 }
