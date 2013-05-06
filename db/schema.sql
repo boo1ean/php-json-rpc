@@ -54,8 +54,21 @@ CREATE TABLE IF NOT EXISTS `products` (
     `photo`       VARCHAR(255),
     `created_at`  DATETIME NOT NULL,
     `updated_at`  DATETIME NOT NULL,
+    `status`      ENUM('available', 'unavailable', 'sold') NOT NULL DEFAULT 'available',
     PRIMARY KEY (`id`),
     FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `product_orders` (
+    `id`          INT(11)      NOT NULL AUTO_INCREMENT,
+    `product_id`  INT(11)      NOT NULL,
+    `user_id`     INT(11)      NOT NULL,
+    `status`      ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+    `created_at`  DATETIME NOT NULL,
+    `updated_at`  DATETIME NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`user_id`)    REFERENCES `user`(`id`)
+    FOREIGN KEY (`product_id`) REFERENCES `product`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `bookings` (
