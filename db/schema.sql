@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS `users` (
     `country`      VARCHAR(45)  NOT NULL DEFAULT '',
     `city`         VARCHAR(45)  NOT NULL DEFAULT '',
     `address`      VARCHAR(255) NOT NULL DEFAULT '',
+    `created_at`   DATETIME NOT NULL,
+    `updated_at`   DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -37,6 +39,8 @@ CREATE TABLE IF NOT EXISTS `businesses` (
     `city`         VARCHAR(80)  NOT NULL DEFAULT '',
     `address`      VARCHAR(255) NOT NULL,
     `photo`        VARCHAR(255),
+    `created_at`   DATETIME NOT NULL,
+    `updated_at`   DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -48,15 +52,19 @@ CREATE TABLE IF NOT EXISTS `products` (
     `description` TEXT         NOT NULL DEFAULT '',
     `price`       DOUBLE       NOT NULL,
     `photo`       VARCHAR(255),
+    `created_at`  DATETIME NOT NULL,
+    `updated_at`  DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `bookings` (
-    `id`          INT(11)      NOT NULL AUTO_INCREMENT,
-    `product_id`  INT(11)      NOT NULL,
-    `duration`    INT(5)       NOT NULL,
-    `price`       DOUBLE       NOT NULL,
+    `id`          INT(11)  NOT NULL AUTO_INCREMENT,
+    `product_id`  INT(11)  NOT NULL,
+    `duration`    INT(5)   NOT NULL,
+    `price`       DOUBLE   NOT NULL,
+    `created_at`  DATETIME NOT NULL,
+    `updated_at`  DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
@@ -66,6 +74,8 @@ CREATE TABLE IF NOT EXISTS `product_bookings` (
     `booking_id` INT(11)  NOT NULL,
     `user_id`    INT(11)  NOT NULL,
     `start_time` DATETIME NOT NULL,
+    `created_at` DATETIME NOT NULL,
+    `updated_at` DATETIME NOT NULL,
     `status`     ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
     PRIMARY KEY (`id`),
     FOREIGN KEY (`booking_id`) REFERENCES `bookings`(`id`),
@@ -78,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `reviews` (
     `user_id`     INT(11)      NOT NULL,
     `title`       VARCHAR(255) NOT NULL DEFAULT '',
     `body`        TEXT         NOT NULL DEFAULT '',
+    `created_at`  DATETIME NOT NULL,
+    `updated_at`  DATETIME NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`business_id`) REFERENCES `businesses`(`id`),
     FOREIGN KEY (`user_id`)  REFERENCES `users`(`id`)
