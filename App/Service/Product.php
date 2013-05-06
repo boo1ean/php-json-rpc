@@ -44,6 +44,8 @@ class Product extends Service
     protected function _getProducts($p) {
         $options = $this->pagination($p);
 
+        $options['order'] = 'name asc';
+
         if (!empty($p['business_id'])) {
             $options['conditions'] = array('business_id = ?', $p['business_id']);
         }
