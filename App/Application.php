@@ -130,6 +130,10 @@ class Application
             return new \App\Service\Booking($c);
         });
 
+        $this->c['order-service'] = $this->c->share(function($c) {
+            return new \App\Service\Order($c);
+        });
+
         $this->c['review-service'] = $this->c->share(function($c) {
             return new \App\Service\Review($c);
         });

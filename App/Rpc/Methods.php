@@ -96,20 +96,26 @@ class Methods
     }
 
     /**
-     * Request for booking
+     * Request for a booking
      */
     public function book($p) {
-        $this->checkSession();
-        $p['user_id'] = $this->c['user']->id;
+        $p = $this->populateUserId($p);
         return $this->c['booking-service']->requestBooking($p)->attributes();
+    }
+
+    /**
+     * Request for an order
+     */
+    public function order() {
+        $p = $this->populateUserId($p);
+        return $this->c['order-service']->requestOrder($p)->attributes();
     }
 
     /**
      * Add review to a business
      */
     public function addReview($p) {
-        $this->checkSession();
-        $p['user_id'] = $this->c['user']->id;
+        $p = $this->populateUserId($p);
         return $this->c['review-service']->addReview($p)->attributes();
     }
 
@@ -139,8 +145,7 @@ class Methods
      * Get list of pending bookigs for current user
      */
     public function pendingBookings($p = array()) {
-        $this->checkSession();
-        $p['user_id'] = $this->c['user']->id;
+        $p = $this->populateUserId($p);
         return $this->c['booking-service']->pendingBookings($p);
     }
 
@@ -148,9 +153,8 @@ class Methods
      * Approve bookings product
      */
     public function approveBooking($p) {
-        $this->checkSession();
-        $p['user_id'] = $this->c['user']->id;
-        $p['status']  = \App\Model\ProductBooking::APPROVED;
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductBooking::APPROVED;
         return $this->c['booking-service']->setBookingStatus($p)->attributes();
     }
 
@@ -158,9 +162,8 @@ class Methods
      * Reject bookings product
      */
     public function rejectBooking($p) {
-        $this->checkSession();
-        $p['user_id'] = $this->c['user']->id;
-        $p['status']  = \App\Model\ProductBooking::REJECTED;
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductBooking::REJECTED;
         return $this->c['booking-service']->setBookingStatus($p)->attributes();
     }
 
@@ -186,10 +189,14 @@ class Methods
         return $result;
     }
 
-    protected function checkSession() {
-        if (!$this->c['user']) {
+    protected function populateUserId($p) {
+        $user = $this->c['user'];
+        if (!$user) {
             throw new \Exception('Unauthorized.');
         }
+
+        $p['user_id'] = $user->id;
+        return $p;
     }
 
     // @codeCoverageIgnoreStart

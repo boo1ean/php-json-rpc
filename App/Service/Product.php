@@ -3,7 +3,7 @@ namespace App\Service;
 
 use App\Ext\Service;
 use Respect\Validation\Validator as v;
-use App\Model\Product as Model;
+use App\Model\Product as ProductModel;
 use App\Model\Booking as BookingModel;
 
 class Product extends Service
@@ -54,7 +54,7 @@ class Product extends Service
             $options['include'] = array('bookings');
         }
 
-        return Model::find('all', $options);
+        return ProductModel::find('all', $options);
     }
 
     /**
@@ -65,13 +65,14 @@ class Product extends Service
      */
     protected function _productStatus($p) {
         try {
-            $product = Model::find($p['product_id']);
+            $product = ProductModel::find($p['product_id']);
         } catch (\Exception $e) {
             throw new \InvalidArgumentException("Product with id {$p['product_id']} doesn't exist");
         }
 
         return $product->statusReport();
     }
+
 
     /**
      * Check is product with specified id is available
@@ -112,6 +113,13 @@ class Product extends Service
         return $available;
     }
 
+    /**
+     * Check if two time ranges intersect
+     *
+     * @param array $first time range with start, end timestamps
+     * @param array $second time range with start, end timestamps
+     * @return bool
+     */
     private function intersection($first, $second) {
         return $first['start'] >= $second['start'] && $first['start'] <= $second['end'] ||
                $first['end'] >= $second['start'] && $first['end'] <= $second['end'];

@@ -422,6 +422,7 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'businesses')));
         $this->assertTrue(is_callable(array($method, 'addReview')));
         $this->assertTrue(is_callable(array($method, 'book')));
+        $this->assertTrue(is_callable(array($method, 'order')));
         $this->assertTrue(is_callable(array($method, 'productStatus')));
         $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
         $this->assertTrue(is_callable(array($method, 'pendingBookings')));

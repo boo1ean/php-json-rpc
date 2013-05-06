@@ -2,6 +2,10 @@
 namespace App\Model;
 class Product extends \ActiveRecord\Model
 {
+    const AVAILABLE   = 'available';
+    const UNAVAILABLE = 'unavailable';
+    const SOLD        = 'sold';
+
     static $belongs_to = array(
         array('business')
     );

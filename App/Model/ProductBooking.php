@@ -7,7 +7,7 @@ class ProductBooking extends \ActiveRecord\Model
     const APPROVED = 'aproved';
     const REJECTED = 'rejected';
 
-    static $belongs_to = array(
+    public static $belongs_to = array(
         array('booking'),
         array('user')
     );
