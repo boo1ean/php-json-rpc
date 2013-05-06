@@ -34,7 +34,8 @@ class ProductService extends TestCase
      * @expectedException Exception
      */
     public function testInvalidBusinessId() {
-        $p = array_merge($this->p, array('business_id' => 'custom'));
+        $p = $this->p;
+        $p['business_id'] = 'custom';
         $this->container['product-service']->getProducts($p);
     }
 
@@ -43,14 +44,6 @@ class ProductService extends TestCase
      */
     public function testNoParams() {
         $this->container['product-service']->getProducts();
-    }
-
-    /**
-     * @expectedException Exception
-     */
-    public function testEmptyBusinessId() {
-        $p = array('business_id' => '');
-        $this->container['product-service']->getProducts($p);
     }
 
     /**
@@ -176,7 +169,7 @@ class ProductService extends TestCase
             'start_time' => $time
         );
 
-        $result = $this->container['product-service']->isProductAvailable($p);
+        $this->container['product-service']->isProductAvailable($p);
     }
 
     private function prepareBooking() {
@@ -184,5 +177,19 @@ class ProductService extends TestCase
         $this->business = $this->createBusiness($this->user->id);
         $this->product  = $this->createProduct($this->business->id);
         $this->booking  = $this->createBooking($this->product->id);
+    }
+
+    public function testAllProducts() {
+        $p = $this->p;
+        unset($p['business_id']);
+        $user = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $this->createProducts($business->id, 10);
+
+        $business = $this->createBusiness($user->id);
+        $this->createProducts($business->id, 9);
+
+        $result = $this->container['product-service']->getProducts($p);
+        $this->assertCount(19, $result);
     }
 }

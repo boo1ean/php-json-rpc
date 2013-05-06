@@ -18,7 +18,7 @@ class Product extends Service
 
         return array(
             'getProducts' => array(
-                'business_id' => v::notEmpty()->int()->positive(),
+                'business_id' => v::oneOf(v::int()->positive(), v::nullValue()),
                 'rpp'         => v::int()->between(self::MIN_RPP, self::MAX_RPP),
                 'page'        => v::int()->positive()
             ),
@@ -36,14 +36,17 @@ class Product extends Service
     }
 
     /**
-     * Get list of product for specific business'
+     * Get list of product for specific business
      *
      * @param integer $business_id
      * @return array collection of product
      */
     protected function _getProducts($p) {
         $options = $this->pagination($p);
-        $options['conditions'] = array('business_id = ?', $p['business_id']);
+
+        if (!empty($p['business_id'])) {
+            $options['conditions'] = array('business_id = ?', $p['business_id']);
+        }
 
         if (isset($p['include_bookings']) && $p['include_bookings']) {
             $options['include'] = array('bookings');
