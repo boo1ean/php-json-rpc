@@ -15,7 +15,7 @@ class Application
     /**
      * DI container
      */
-    protected $container;
+    protected $c;
 
     /**
      * Request query string
@@ -35,7 +35,7 @@ class Application
      * @return \App\Application
      */
     public function runRPC() {
-        $this->container['json-rpc-server']->process();
+        $this->c['json-rpc-server']->process();
         return $this;
     }
 
@@ -58,7 +58,7 @@ class Application
      * @return Pimple di container
      */
     public function getContainer() {
-        return $this->container;
+        return $this->c;
     }
 
     /**
@@ -76,61 +76,61 @@ class Application
      * Setup di container
      */
     protected function setupContainer() {
-        $this->container = new \Pimple();
+        $this->c = new \Pimple();
 
         if (self::V2 == $this->query) {
-            $this->container['rpc-methods-class'] = '\\App\\Rpc\\MethodsV2';
+            $this->c['rpc-methods-class'] = '\\App\\Rpc\\MethodsV2';
         } else {
-            $this->container['rpc-methods-class'] = '\\App\\Rpc\\Methods';
+            $this->c['rpc-methods-class'] = '\\App\\Rpc\\Methods';
         }
 
-        $this->container['config'] = $this->config;
+        $this->c['config'] = $this->config;
 
-        $this->container['vent'] = $this->container->share(function($c) {
+        $this->c['vent'] = $this->c->share(function($c) {
             return new \Evenement\EventEmitter();
         });
 
-        $this->container['rpc-methods'] = function($c){
+        $this->c['rpc-methods'] = function($c){
             return new $c['rpc-methods-class']($c);
         };
 
-        $this->container['json-rpc-server'] = $this->container->share(function($c) {
+        $this->c['json-rpc-server'] = $this->c->share(function($c) {
             return new \Junior\Server($c['rpc-methods']);
         });
 
-        $this->container['auth-storage'] = function($c) {
+        $this->c['auth-storage'] = function($c) {
             return new \Zend\Authentication\Storage\Session();
         };
 
-        $this->container['auth-adapter'] = function($c) {
+        $this->c['auth-adapter'] = function($c) {
             return new \App\Ext\Zend\Auth\Adapter();
         };
 
-        $this->container['auth-service'] = $this->container->share(function($c) {
+        $this->c['auth-service'] = $this->c->share(function($c) {
             return new \Zend\Authentication\AuthenticationService($c['auth-storage'], $c['auth-adapter']);
         });
 
-        $this->container['user'] = $this->container->share(function($c) {
+        $this->c['user'] = $this->c->share(function($c) {
             return $c['auth-service']->getIdentity();
         });
 
-        $this->container['user-service'] = $this->container->share(function($c) {
+        $this->c['user-service'] = $this->c->share(function($c) {
             return new \App\Service\User($c);
         });
 
-        $this->container['business-service'] = $this->container->share(function($c) {
+        $this->c['business-service'] = $this->c->share(function($c) {
             return new \App\Service\Business($c);
         });
 
-        $this->container['product-service'] = $this->container->share(function($c) {
+        $this->c['product-service'] = $this->c->share(function($c) {
             return new \App\Service\Product($c);
         });
 
-        $this->container['booking-service'] = $this->container->share(function($c) {
+        $this->c['booking-service'] = $this->c->share(function($c) {
             return new \App\Service\Booking($c);
         });
 
-        $this->container['review-service'] = $this->container->share(function($c) {
+        $this->c['review-service'] = $this->c->share(function($c) {
             return new \App\Service\Review($c);
         });
     }
