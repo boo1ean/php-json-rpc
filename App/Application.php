@@ -86,6 +86,10 @@ class Application
 
         $this->container['config'] = $this->config;
 
+        $this->container['vent'] = $this->container->share(function($c) {
+            return new \Evenement\EventEmitter();
+        });
+
         $this->container['rpc-methods'] = function($c){
             return new $c['rpc-methods-class']($c);
         };

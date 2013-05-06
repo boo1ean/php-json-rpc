@@ -10,6 +10,7 @@
         "fzaninotto/faker": "1.1.*@dev",
         "respect/validation": "dev-develop",
         "sly/notification-pusher": "dev-master",
+        "evenement/evenement": "1.0.*",
         "phpunit/phpunit": "3.7.19"
     }
 }
