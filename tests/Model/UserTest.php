@@ -18,4 +18,16 @@ class UserTest extends \TestCase
         $this->assertTrue($user->isAbleToUpdate($pBooking));
         $this->assertFalse($user->isAbleToUpdate(new \stdClass));
     }
+
+    public function testIsAbleToUpdateProductOrder() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $product  = $this->createProduct($business->id);
+
+        $customer = $this->createUser();
+        $order    = $this->createProductOrder($customer->id, $product->id);
+
+        $this->assertTrue($user->isAbleToUpdate($order));
+        $this->assertFalse($customer->isAbleToUpdate($order));
+    }
 }

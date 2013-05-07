@@ -67,9 +67,4 @@ class Order extends Service
 
         return $user->getPendingOrders();
     }
-
-
-    public function _setOrderStatus() {
-        // todo
-    }
 }
