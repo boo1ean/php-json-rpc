@@ -8,7 +8,6 @@ class OrderTest extends TestCase
         $this->user     = $this->createUser();
         $this->business = $this->createBusiness($this->user->id);
         $this->product  = $this->createProduct($this->business->id);
-        $this->order    = $this->createProductOrder($this->user->id, $this->product->id);
         $this->p = array(
             'user_id'    => $this->user->id,
             'product_id' => $this->product->id
@@ -16,8 +15,6 @@ class OrderTest extends TestCase
     }
 
     public function testRequestOrder() {
-        $this->assertNotEmpty($this->order);
-
         $order = $this->container['order-service']->requestOrder($this->p);
         $this->assertNotEmpty($order);
         $this->assertEquals($order->user_id, $this->user->id);
@@ -88,22 +85,50 @@ class OrderTest extends TestCase
         $this->container['order-service']->requestOrder($p);
     }
 
-    //public function testGetPendingOrders() {
-        //$p = array('user_id' => $this->user->id);
-        //$bookings = $this->container['order-service']->pendingBookings($p);
-        //$this->assertInternalType('array', $bookings);
-        //$this->assertEmpty($bookings);
+    public function testGetPendingOrders() {
+        $p = array('user_id' => $this->user->id);
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertInternalType('array', $orders);
+        $this->assertEmpty($orders);
 
-        //$user = $this->createUser();
-        //$this->createProductBooking($user->id, $this->order->id);
-        //$bookings = $this->container['order-service']->pendingBookings($p);
-        //$this->assertCount(1, $bookings);
+        $user = $this->createUser();
+        $this->createProductOrder($user->id, $this->product->id);
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertCount(1, $orders);
 
-        //$this->createProductBooking($user->id, $this->order->id);
-        //$this->createProductBooking($user->id, $this->order->id);
-        //$bookings = $this->container['order-service']->pendingBookings($p);
-        //$this->assertCount(3, $bookings);
-    //}
+        $this->createProductOrder($user->id, $this->product->id);
+        $this->createProductOrder($user->id, $this->product->id);
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertCount(3, $orders);
+
+        $this->createProductOrder($user->id, $this->product->id, array(
+            'status' => App\Model\ProductOrder::APPROVED
+        ));
+
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertCount(3, $orders);
+
+        $this->createProductOrder($user->id, $this->product->id, array(
+            'status' => App\Model\ProductOrder::REJECTED
+        ));
+
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertCount(3, $orders);
+    }
+
+    public function testPendingOrderAnotherUsersBusiness() {
+        $user = $this->createUser();
+        $p = array('user_id' => $user->id);
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertInternalType('array', $orders);
+        $this->assertEmpty($orders);
+
+        $this->createProductOrder($this->user->id, $this->product->id);
+        $this->createProductOrder($this->user->id, $this->product->id);
+
+        $orders = $this->container['order-service']->pendingOrders($p);
+        $this->assertEmpty($orders);
+    }
 
     /**
      * @expectedException Exception

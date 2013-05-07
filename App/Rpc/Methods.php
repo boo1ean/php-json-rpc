@@ -150,6 +150,14 @@ class Methods
     }
 
     /**
+     * Get list of pending orders for current user
+     */
+    public function pendingOrders($p = array()) {
+        $p = $this->populateUserId($p);
+        return $this->c['order-service']->pendingOrders($p);
+    }
+
+    /**
      * Approve bookings product
      */
     public function approveBooking($p) {

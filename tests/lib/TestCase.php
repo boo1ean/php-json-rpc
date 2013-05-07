@@ -51,8 +51,8 @@ class TestCase extends PHPUnit_Framework_TestCase
 
         $tables = array(
             'reviews',
-            'product_bookings',
             'product_orders',
+            'product_bookings',
             'bookings',
             'products',
             'businesses',

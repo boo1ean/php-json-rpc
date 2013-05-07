@@ -69,6 +69,34 @@ class User extends \ActiveRecord\Model
         return $conn->query($sql, $params)->fetchAll();
     }
 
+    public function getPendingOrders() {
+        $conn = self::connection();
+        $sql = "
+            SELECT 
+
+            biz.name as business_name,
+            biz.id as business_id,
+            p.name as product_name,
+            p.id as product_id,
+            p.price,
+            po.id as product_order_id
+
+            FROM product_orders po
+
+            INNER JOIN products p
+            ON p.id = po.product_id AND po.status = ?
+
+            INNER JOIN businesses biz
+            ON biz.id = p.business_id
+
+            INNER JOIN users u
+            ON u.id = biz.user_id AND biz.user_id = ?
+        ";
+
+        $params = array(ProductOrder::PENDING, $this->id);
+        return $conn->query($sql, $params)->fetchAll();
+    }
+
     /**
      * Check if user able to update specified entity
      *
@@ -79,6 +107,8 @@ class User extends \ActiveRecord\Model
         switch (true) {
             case ($entity instanceof \App\Model\ProductBooking):
                 return $this->isAbleToUpdateProductBooking($entity);
+            case ($entity instanceof \App\Model\ProductOrder):
+                return $this->isAbleToUpdateProductOrder($entity);
 
             default:
                 return false;
@@ -88,10 +118,22 @@ class User extends \ActiveRecord\Model
     /**
      * Checks if user is able to update product booking
      *
+     * @param App\Model\ProductBooking
      * @return bool
      */
     protected function isAbleToUpdateProductBooking($productBooking) {
         $owner = $productBooking->booking->product->business->user;
+        return $owner->id == $this->id;
+    }
+
+    /**
+     * Checks if user is able to update product order
+     *
+     * @param App\Model\ProductOrder
+     * @return bool
+     */
+    protected function isAbleToUpdateProductOrder($productOrder) {
+        $owner = $productOrder->product->business->user;
         return $owner->id == $this->id;
     }
 }

@@ -395,6 +395,26 @@ class MethodsTest extends TestCase
         $this->assertCount(2, $bookings);
     }
 
+    public function testPendingOrders() {
+        $this->prepareBooking();
+
+        $user = $this->createUser();
+        $this->createProductOrder($user->id, $this->product->id);
+        $this->createProductOrder($user->id, $this->product->id);
+
+        $request = $this->composeRequest(array(
+            'method' => 'pendingOrders'
+        ));
+
+        $this->container['user'] = $this->user;
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $bookings = $response->result;
+        $this->assertCount(2, $bookings);
+    }
+
     public function testNoPendingBookings() {
         $this->prepareBooking();
 
@@ -461,6 +481,7 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'productStatus')));
         $this->assertTrue(is_callable(array($method, 'isProductAvailable')));
         $this->assertTrue(is_callable(array($method, 'pendingBookings')));
+        $this->assertTrue(is_callable(array($method, 'pendingOrders')));
         $this->assertTrue(is_callable(array($method, 'approveBooking')));
         $this->assertTrue(is_callable(array($method, 'rejectBooking')));
 
