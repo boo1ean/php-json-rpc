@@ -138,92 +138,92 @@ class OrderTest extends TestCase
         $bookings = $this->container['order-service']->pendingOrders($p);
     }
 
-    //public function testSetBookingStatus() {
-        //$user = $this->createUser();
-        //$pb   = $this->createProductBooking($user->id, $this->order->id);
+    public function testSetOrderStatus() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
 
-        //$status = \App\Model\ProductBooking::REJECTED;
-        //$p = array(
-            //'product_booking_id' => $pb->id,
-            //'user_id'            => $this->user->id,
-            //'status'             => $status
-        //);
+        $status = \App\Model\ProductOrder::REJECTED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $this->user->id,
+            'status'           => $status
+        );
 
-        //$result = $this->container['order-service']->setBookingStatus($p);
-        //$this->assertEquals($result->status, $status);
+        $result = $this->container['order-service']->setOrderStatus($p);
+        $this->assertEquals($result->status, $status);
 
-        //$status = \App\Model\ProductBooking::APPROVED;
-        //$p['status'] = $status;
+        $status = \App\Model\ProductOrder::APPROVED;
+        $p['status'] = $status;
 
-        //$result = $this->container['order-service']->setBookingStatus($p);
-        //$this->assertEquals($result->status, $status);
-    //}
-
-    /**
-     * @expectedException Exception
-     */
-    //public function testSetBookingStatusInvalidUserId() {
-        //$user = $this->createUser();
-        //$pb   = $this->createProductBooking($user->id, $this->order->id);
-
-        //$status = \App\Model\ProductBooking::REJECTED;
-        //$p = array(
-            //'product_booking_id' => $pb->id,
-            //'user_id'            => 2342423,
-            //'status'             => $status
-        //);
-
-        //$result = $this->container['order-service']->setBookingStatus($p);
-    //}
+        $result = $this->container['order-service']->setOrderStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
 
     /**
      * @expectedException Exception
      */
-    //public function testSetBookingStatusProductBookingId() {
-        //$user = $this->createUser();
-        //$pb   = $this->createProductBooking($user->id, $this->order->id);
+    public function testSetOrderStatusInvalidUserId() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
 
-        //$status = \App\Model\ProductBooking::REJECTED;
-        //$p = array(
-            //'product_booking_id' => 2432342,
-            //'user_id'            => $this->user->id,
-            //'status'             => $status
-        //);
+        $status = \App\Model\ProductOrder::REJECTED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => 2342423,
+            'status'           => $status
+        );
 
-        //$result = $this->container['order-service']->setBookingStatus($p);
-    //}
-
-    /**
-     * @expectedException Exception
-     */
-    //public function testSetBookingStatusInvalidStatus() {
-        //$user = $this->createUser();
-        //$pb   = $this->createProductBooking($user->id, $this->order->id);
-
-        //$p = array(
-            //'product_booking_id' => $pb->id,
-            //'user_id'            => $this->user->id,
-            //'status'             => 'wtf'
-        //);
-
-        //$result = $this->container['order-service']->setBookingStatus($p);
-    //}
+        $this->container['order-service']->setOrderStatus($p);
+    }
 
     /**
      * @expectedException Exception
      */
-    //public function testSetBookingStatusDontHavePermissions() {
-        //$user = $this->createUser();
-        //$pb   = $this->createProductBooking($user->id, $this->order->id);
+    public function testSetOrderStatusProductInvalidBookingId() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
 
-        //$status = \App\Model\ProductBooking::REJECTED;
-        //$p = array(
-            //'product_booking_id' => $pb->id,
-            //'user_id'            => $user->id,
-            //'status'             => $status
-        //);
+        $status = \App\Model\ProductOrder::REJECTED;
+        $p = array(
+            'product_order_id' => 2432342,
+            'user_id'          => $this->user->id,
+            'status'           => $status
+        );
 
-        //$result = $this->container['order-service']->setBookingStatus($p);
-    //}
+        $this->container['order-service']->setOrderStatus($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetOrderStatusInvalidStatus() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $this->user->id,
+            'status'           => 'wtf'
+        );
+
+        $this->container['order-service']->setOrderStatus($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testSetOrderStatusDontHavePermissions() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $status = \App\Model\ProductOrder::REJECTED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $user->id,
+            'status'           => $status
+        );
+
+        $this->container['order-service']->setOrderStatus($p);
+    }
 
 }

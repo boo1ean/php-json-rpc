@@ -44,6 +44,8 @@ class TestCase extends PHPUnit_Framework_TestCase
             $method = new ReflectionMethod('App\\Ext\\Fixtures', $method);
             return $method->invokeArgs($this->fixtures, $arguments);
         }
+
+        throw \BadMethodCallException("Don't be mad! Please use another method.");
     }
 
     public function clearDb() {
