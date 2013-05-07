@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS `product_orders` (
     `created_at`  DATETIME NOT NULL,
     `updated_at`  DATETIME NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`)    REFERENCES `user`(`id`)
-    FOREIGN KEY (`product_id`) REFERENCES `product`(`id`)
+    FOREIGN KEY (`user_id`)    REFERENCES `users`(`id`),
+    FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `bookings` (
