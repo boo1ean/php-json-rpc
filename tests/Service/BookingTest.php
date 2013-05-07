@@ -182,7 +182,7 @@ class BookingTest extends TestCase
     /**
      * @expectedException Exception
      */
-    public function testSetBookingStatusProductBookingId() {
+    public function testSetBookingStatusInvalidProductBookingId() {
         $user = $this->createUser();
         $pb   = $this->createProductBooking($user->id, $this->booking->id);
 

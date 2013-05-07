@@ -340,10 +340,45 @@ class MethodsTest extends TestCase
         $this->assertEquals($productBooking->booking_id, $this->booking->id);
     }
 
+    public function testOrderMethod() {
+        $this->prepareBooking();
+
+        $params = array(
+            'product_id' => $this->product->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'order',
+            'params' => $params
+        ));
+
+        // Test unauthorized
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('error', $response);
+        $this->container['user'] = $this->user;
+
+        $request = $this->composeRequest(array(
+            'method' => 'order',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $order = $response->result;
+
+        $this->assertEquals($order->user_id, $this->user->id);
+        $this->assertEquals($order->product_id, $this->product->id);
+    }
+
     public function testPendingBookings() {
         $this->prepareBooking();
 
         $user = $this->createUser();
+        $time = date_create('NOW')->add(new \DateInterval('P1M'));
         $this->createProductBooking($user->id, $this->booking->id);
         $this->createProductBooking($user->id, $this->booking->id);
 
