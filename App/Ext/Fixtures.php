@@ -6,6 +6,7 @@ use App\Model\Business;
 use App\Model\Product;
 use App\Model\Booking;
 use App\Model\ProductBooking;
+use App\Model\ProductOrder;
 use App\Model\Review;
 
 // @codeCoverageIgnoreStart
@@ -197,8 +198,9 @@ class Fixtures
     /**
      * Create single product booking record
      *
-     * @param $user_id
-     * @param $booking_id
+     * @param integer $user_id
+     * @param integer $booking_id
+     * @param array   $p model attributes
      */
     public function createProductBooking($user_id, $booking_id, $p = array()) {
         $time = $this->faker->dateTimeThisMonth;
@@ -209,8 +211,25 @@ class Fixtures
             'start_time' => $time->format($this->date_format)
         ), $p);
 
-        $this->log("ProductBooking created: booking_id={$p['booking_id']} user_id{$p['user_id']} {$p['start_time']}");
+        $this->log("ProductBooking created: booking_id={$p['booking_id']} user_id={$p['user_id']} {$p['start_time']}");
         return ProductBooking::create($p);
+    }
+
+    /**
+     * Create product order
+     *
+     * @param integer $user_id
+     * @param integer $product_id
+     * @param array   $p model attributes
+     */
+    public function createProductOrder($user_id, $product_id, $p = array()) {
+        $p = array_merge(array(
+            'user_id'    => $user_id,
+            'product_id' => $product_id
+        ), $p);
+
+        $this->log("ProductOrder created: product_id={$p['product_id']} user_id={$p['user_id']}");
+        return ProductOrder::create($p);
     }
 
     /**

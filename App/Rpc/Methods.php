@@ -106,7 +106,7 @@ class Methods
     /**
      * Request for an order
      */
-    public function order() {
+    public function order($p) {
         $p = $this->populateUserId($p);
         return $this->c['order-service']->requestOrder($p)->attributes();
     }
