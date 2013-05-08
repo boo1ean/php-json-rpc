@@ -484,12 +484,14 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'pendingOrders')));
         $this->assertTrue(is_callable(array($method, 'approveBooking')));
         $this->assertTrue(is_callable(array($method, 'rejectBooking')));
+        $this->assertTrue(is_callable(array($method, 'approveOrder')));
+        $this->assertTrue(is_callable(array($method, 'rejectOrder')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));
     }
 
-    public function testApprove() {
+    public function testApproveBooking() {
         $this->prepareBooking();
         $user = $this->createUser();
         $productBooking = $this->createProductBooking($user->id, $this->booking->id);
@@ -515,7 +517,59 @@ class MethodsTest extends TestCase
         $this->assertEquals($pb->status, \App\Model\ProductBooking::APPROVED);
     }
 
-    public function testReject() {
+    public function testApproveOrder() {
+        $this->prepareBooking();
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $params = array(
+            'product_order_id' => $order->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'approveOrder',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $this->user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductBooking::APPROVED);
+    }
+
+    public function testRejectOrder() {
+        $this->prepareBooking();
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $params = array(
+            'product_order_id' => $order->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'rejectOrder',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $this->user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductBooking::REJECTED);
+    }
+
+    public function testRejectBooking() {
         $this->prepareBooking();
         $user = $this->createUser();
         $productBooking = $this->createProductBooking($user->id, $this->booking->id);

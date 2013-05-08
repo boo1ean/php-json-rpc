@@ -158,6 +158,24 @@ class Methods
     }
 
     /**
+     * Approve product order
+     */
+    public function approveOrder($p) {
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductOrder::APPROVED;
+        return $this->c['order-service']->setOrderStatus($p)->attributes();
+    }
+
+    /**
+     * Reject product order
+     */
+    public function rejectOrder($p) {
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductOrder::REJECTED;
+        return $this->c['order-service']->setOrderStatus($p)->attributes();
+    }
+
+    /**
      * Approve bookings product
      */
     public function approveBooking($p) {
