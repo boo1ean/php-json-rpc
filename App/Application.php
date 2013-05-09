@@ -114,6 +114,14 @@ class Application
             return $c['auth-service']->getIdentity();
         });
 
+        $this->c['apple-pusher'] = $this->c->share(function($c) {
+            return new \App\Ext\ApplePusher($c['config']['apple_push_notifications']);
+        });
+
+        $this->c['android-pusher'] = $this->c->share(function($c) {
+            return new \App\Ext\AndroidPusher($c['config']['android_push_notifications']);
+        });
+
         $this->c['user-service'] = $this->c->share(function($c) {
             return new \App\Service\User($c);
         });
@@ -136,6 +144,10 @@ class Application
 
         $this->c['review-service'] = $this->c->share(function($c) {
             return new \App\Service\Review($c);
+        });
+
+        $this->c['push-service'] = $this->c->share(function($c) {
+            return new \App\Service\Push($c);
         });
     }
 }

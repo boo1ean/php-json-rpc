@@ -32,7 +32,7 @@ class ServiceTest extends TestCase
         $service = new CustomService($this->container);
         $that = $this;
         $params = array(50, 100);
-        $this->container['vent']->on('CustomService.usefulMethod.success', function($p, $result) use ($that, $params) {
+        $this->container['vent']->on('CustomService.usefulMethod.success', function($c, $p, $result) use ($that, $params) {
             $that->assertEquals($params, $p);
             $that->assertEquals(CustomService::RESULT, $result);
             throw new Exception('Done!');
@@ -48,7 +48,7 @@ class ServiceTest extends TestCase
     public function testEventError() {
         $service = new CustomService($this->container);
         $that = $this;
-        $this->container['vent']->on('CustomService.usefulMethod.error', function($p, $e) use ($that) {
+        $this->container['vent']->on('CustomService.usefulMethod.error', function($c, $p, $e) use ($that) {
             $that->assertInstanceOf('Exception', $e);
             $that->assertEmpty($p);
             throw new Exception('Done!');

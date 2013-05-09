@@ -9,5 +9,19 @@ return array(
         )
     ),
 
-    'date_format' => DateTime::W3C
+    'date_format' => DateTime::W3C,
+
+    'apple_push_notifications' => array(
+        'dev'                    => false,
+        'simulate'               => false,
+        'certificate'            => '/path/to/your/certificate.pem',
+        'certificate_passphrase' => 'myPassPhrase',
+        'devices'                => array(42)
+    ),
+
+    'android_push_notifications' => array(
+        'applicationID' => '123456789012',
+        'apiKey'        => 'y0ur4p1k3y',
+        'devices'       => array(42)
+    )
 );

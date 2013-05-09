@@ -12,6 +12,17 @@ class Methods
      */
     public function __construct($c) {
         $this->c = $c;
+
+        $this->c['vent']->on('Booking.requestBooking.success', function($c, $p, $productBooking) {
+            $owner = $productBooking->booking->product->business->user;
+
+            $p = array(
+                'user_id' => $owner->id,
+                'message' => json_encode($productBooking->attributes())
+            );
+
+            //$c['push-service']->notify($p);
+        });
     }
 
     public function login($p = array()) {

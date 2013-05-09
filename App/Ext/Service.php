@@ -49,16 +49,16 @@ class Service
 
         $this->validate($method, $p);
 
-        $eventName = get_class($this) . ".$method";
+        $eventName = end(explode('\\', get_class($this))) . ".$method";
 
         try {
             $result = call_user_method('_' . $method, $this, $p);
         } catch (\Exception $e) {
-            $this->container['vent']->emit("$eventName.error", array($p, $e));
+            $this->container['vent']->emit("$eventName.error", array($this->container, $p, $e));
             throw $e;
         }
 
-        $this->container['vent']->emit("$eventName.success", array($p, $result));
+        $this->container['vent']->emit("$eventName.success", array($this->container, $p, $result));
         return $result;
     }
 
