@@ -26,6 +26,7 @@ class Booking extends Service
                 'status'             => v::notEmpty()->string()->in(array(
                     ProductBookingModel::APPROVED,
                     ProductBookingModel::REJECTED,
+                    ProductBookingModel::CANCELED,
                     ProductBookingModel::PENDING
                 ))
             )
@@ -94,7 +95,11 @@ class Booking extends Service
             throw new \InvalidArgumentException("Product booking with id {$p['product_booking_id']} doesn't exist.");
         }
 
-        if (!$user->isAbleToUpdate($productBooking)) {
+        if (ProductBookingModel::CANCELED === $p['status']) {
+            if ($user->id != $productBooking->user_id) {
+                throw new \Exception("Booking can be canceled only by its submitter.");
+            }
+        } else if (!$user->isAbleToUpdate($productBooking)) {
             throw new \Exception("User with id {$p['user_id']} doesn't have enough permissions.");
         }
 

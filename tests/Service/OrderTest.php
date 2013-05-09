@@ -138,11 +138,14 @@ class OrderTest extends TestCase
         $bookings = $this->container['order-service']->pendingOrders($p);
     }
 
-    public function testSetOrderStatus() {
+    /**
+     * @expectedException Exception
+     */
+    public function testSetOrderStatusDouble() {
         $user  = $this->createUser();
         $order = $this->createProductOrder($user->id, $this->product->id);
 
-        $status = \App\Model\ProductOrder::REJECTED;
+        $status = \App\Model\ProductOrder::APPROVED;
         $p = array(
             'product_order_id' => $order->id,
             'user_id'          => $this->user->id,
@@ -152,8 +155,70 @@ class OrderTest extends TestCase
         $result = $this->container['order-service']->setOrderStatus($p);
         $this->assertEquals($result->status, $status);
 
-        $status = \App\Model\ProductOrder::APPROVED;
+        $status = \App\Model\ProductOrder::REJECTED;
         $p['status'] = $status;
+
+        $result = $this->container['order-service']->setOrderStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
+
+    public function testCancelOrder() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $status = \App\Model\ProductOrder::CANCELED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $user->id,
+            'status'           => $status
+        );
+
+        $result = $this->container['order-service']->setOrderStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testCancelOrderByAnotherUser() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $status = \App\Model\ProductOrder::CANCELED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $this->user->id,
+            'status'           => $status
+        );
+
+        $result = $this->container['order-service']->setOrderStatus($p);
+    }
+
+    public function testSetOrderStatusApproved() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $status = \App\Model\ProductOrder::APPROVED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $this->user->id,
+            'status'           => $status
+        );
+
+        $result = $this->container['order-service']->setOrderStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
+
+    public function testSetOrderStatusRejected() {
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $status = \App\Model\ProductOrder::REJECTED;
+        $p = array(
+            'product_order_id' => $order->id,
+            'user_id'          => $this->user->id,
+            'status'           => $status
+        );
 
         $result = $this->container['order-service']->setOrderStatus($p);
         $this->assertEquals($result->status, $status);

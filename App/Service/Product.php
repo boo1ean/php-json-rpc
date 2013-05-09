@@ -47,7 +47,9 @@ class Product extends Service
         $options['order'] = 'name asc';
 
         if (!empty($p['business_id'])) {
-            $options['conditions'] = array('business_id = ?', $p['business_id']);
+            $options['conditions'] = array('business_id = ? AND status = ?', $p['business_id'], ProductModel::AVAILABLE);
+        } else {
+            $options['conditions'] = array('status = ?', ProductModel::AVAILABLE);
         }
 
         if (isset($p['include_bookings']) && $p['include_bookings']) {

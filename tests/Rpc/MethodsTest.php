@@ -486,6 +486,8 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'rejectBooking')));
         $this->assertTrue(is_callable(array($method, 'approveOrder')));
         $this->assertTrue(is_callable(array($method, 'rejectOrder')));
+        $this->assertTrue(is_callable(array($method, 'cancelBooking')));
+        $this->assertTrue(is_callable(array($method, 'cancelOrder')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
         $this->assertFalse(is_callable(array($method, 'checkSession')));
@@ -540,7 +542,59 @@ class MethodsTest extends TestCase
         $this->assertObjectHasAttribute('result', $response);
 
         $pb = $response->result;
-        $this->assertEquals($pb->status, \App\Model\ProductBooking::APPROVED);
+        $this->assertEquals($pb->status, \App\Model\ProductOrder::APPROVED);
+    }
+
+    public function testCancelBooking() {
+        $this->prepareBooking();
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $params = array(
+            'product_booking_id' => $pb->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'cancelBooking',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductBooking::CANCELED);
+    }
+
+    public function testCancelOrder() {
+        $this->prepareBooking();
+        $user  = $this->createUser();
+        $order = $this->createProductOrder($user->id, $this->product->id);
+
+        $params = array(
+            'product_order_id' => $order->id
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'cancelOrder',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertNotEmpty($response);
+        $this->assertObjectHasAttribute('result', $response);
+
+        $pb = $response->result;
+        $this->assertEquals($pb->status, \App\Model\ProductOrder::CANCELED);
     }
 
     public function testRejectOrder() {

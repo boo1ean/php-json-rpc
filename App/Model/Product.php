@@ -32,10 +32,10 @@ class Product extends \ActiveRecord\Model
             AND pb.start_time > NOW()
 
             INNER JOIN products p
-            ON p.id = b.product_id
+            ON p.id = b.product_id AND p.status = ?
         ";
 
-        $params = array($this->id, ProductBooking::REJECTED);
+        $params = array($this->id, ProductBooking::REJECTED, Product::AVAILABLE);
         return $conn->query($sql, $params)->fetchAll();
     }
 }

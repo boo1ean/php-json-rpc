@@ -22,6 +22,7 @@ class Order extends Service
                 'status'           => v::notEmpty()->string()->in(array(
                     ProductOrderModel::APPROVED,
                     ProductOrderModel::REJECTED,
+                    ProductOrderModel::CANCELED,
                     ProductOrderModel::PENDING
                 ))
             )
@@ -80,18 +81,37 @@ class Order extends Service
             throw new \InvalidArgumentException("User with id {$p['user_id']} doesn't exist.");
         }
 
-        try {
-            $order = ProductOrderModel::find($p['product_order_id']);
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException("Product order with id {$p['product_order_id']} doesn't exist.");
+        $options = array(
+            'conditions' => array(
+                'product_orders.id = ? AND p.status = ?',
+                $p['product_order_id'],
+                ProductModel::AVAILABLE
+            ),
+            'joins' => 'INNER JOIN products p ON p.id = product_id'
+        );
+
+        $order = ProductOrderModel::find($options);
+        if (is_null($order)) {
+            throw new \InvalidArgumentException("Product order with id {$p['product_order_id']} is unavailable.");
         }
 
-        if (!$user->isAbleToUpdate($order)) {
+        if (ProductOrderModel::CANCELED === $p['status']) {
+            if ($user->id != $order->user_id) {
+                throw new \Exception("Order can be canceled only by its submitter.");
+            }
+        } else if (!$user->isAbleToUpdate($order)) {
             throw new \Exception("User with id {$p['user_id']} doesn't have enough permissions.");
         }
 
         $order->status = $p['status'];
         $order->save();
+
+        // Mark product as sold if order is approved
+        if (ProductOrderModel::APPROVED == $p['status']) {
+            $product = $order->product;
+            $product->status = ProductModel::SOLD;
+            $product->save();
+        }
 
         return $order;
     }

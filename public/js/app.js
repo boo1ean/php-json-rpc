@@ -226,12 +226,36 @@ window.app = (function($, Backbone, _) {
             },
 
             {
+                name: "pendingOrders"
+            },
+
+            {
                 name: "approveBooking",
                 params: ["product_booking_id"]
             },
 
             {
                 name: "rejectBooking",
+                params: ["product_booking_id"]
+            },
+
+            {
+                name: "approveOrder",
+                params: ["product_order_id"]
+            },
+
+            {
+                name: "rejectOrder",
+                params: ["product_order_id"]
+            },
+
+            {
+                name: "cancelOrder",
+                params: ["product_order_id"]
+            },
+
+            {
+                name: "cancelBooking",
                 params: ["product_booking_id"]
             },
 

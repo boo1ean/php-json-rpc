@@ -194,6 +194,24 @@ class Methods
     }
 
     /**
+     * Cancel booking request
+     */
+    public function cancelBooking($p) {
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductBooking::CANCELED;
+        return $this->c['booking-service']->setBookingStatus($p)->attributes();
+    }
+
+    /**
+     * Cancel order request
+     */
+    public function cancelOrder($p) {
+        $p = $this->populateUserId($p);
+        $p['status'] = \App\Model\ProductOrder::CANCELED;
+        return $this->c['order-service']->setOrderStatus($p)->attributes();
+    }
+
+    /**
      * Get top 10 businesses
      */
     public function topBusinesses() {

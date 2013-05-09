@@ -192,4 +192,21 @@ class ProductService extends TestCase
         $result = $this->container['product-service']->getProducts($p);
         $this->assertCount(19, $result);
     }
+
+    public function testIgnoreUnavailableProducts() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $products = $this->createProducts($business->id, 10);
+
+        $products[0]->status = App\Model\Product::UNAVAILABLE;
+        $products[1]->status = App\Model\Product::SOLD;
+        $products[0]->save();
+        $products[1]->save();
+
+        $p = $this->p;
+        unset($p['business_id']);
+
+        $products = $this->container['product-service']->getProducts($p);
+        $this->assertCount(8, $products);
+    }
 }

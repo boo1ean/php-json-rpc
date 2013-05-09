@@ -229,4 +229,36 @@ class BookingTest extends TestCase
         $result = $this->container['booking-service']->setBookingStatus($p);
     }
 
+    public function testCancelBooking() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::CANCELED;
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => $user->id,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+        $this->assertEquals($result->status, $status);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testCancelBookingByAnotherUser() {
+        $user = $this->createUser();
+        $pb   = $this->createProductBooking($user->id, $this->booking->id);
+
+        $status = \App\Model\ProductBooking::CANCELED;
+        $p = array(
+            'product_booking_id' => $pb->id,
+            'user_id'            => $this->user->id,
+            'status'             => $status
+        );
+
+        $result = $this->container['booking-service']->setBookingStatus($p);
+    }
+
 }
