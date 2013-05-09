@@ -9,6 +9,7 @@ class User extends \ActiveRecord\Model
 
     public static $has_many = array(
         array('businesses'),
+        array('devices'),
         array('product_bookings')
     );
 
