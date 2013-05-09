@@ -2,6 +2,8 @@
 namespace App\Ext;
 use Sly\NotificationPusher\Pusher\AndroidPusher as BaseAndroidPusher;
 
+// @codeCoverageIgnoreStart
+
 /**
  * Add opportunity to set devices via method
  */

@@ -30,10 +30,14 @@ class Push extends Service
         $devices = $user->devices;
 
         $ios = array_filter(array_map($this->deviceFilterFunction(DeviceModel::IOS), $devices));
-        $this->push($this->container['apple-pusher'], $ios, $message);
+        if ($ios) {
+            $this->push($this->container['apple-pusher'], $ios, $p['message']);
+        }
 
         $android = array_filter(array_map($this->deviceFilterFunction(DeviceModel::ANDROID), $devices));
-        $this->push($this->container['android-pusher'], $android, $message);
+        if ($android) {
+            $this->push($this->container['android-pusher'], $android, $p['message']);
+        }
     }
 
     private function deviceFilterFunction($type) {
@@ -53,12 +57,7 @@ class Push extends Service
      * @param string $message
      */
     private function push($pusher, $devices, $message) {
-        if (!$devices) {
-            return null;
-        }
-
         $message = new Message($message);
-
         $pusher->addMessage($message);
         $pusher->setDevices($devices);
         return $pusher->push();

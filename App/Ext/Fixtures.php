@@ -8,6 +8,7 @@ use App\Model\Booking;
 use App\Model\ProductBooking;
 use App\Model\ProductOrder;
 use App\Model\Review;
+use App\Model\Device;
 
 // @codeCoverageIgnoreStart
 class Fixtures
@@ -58,6 +59,19 @@ class Fixtures
 
         $this->log("User created: {$p['first_name']} {$p['last_name']} {$p['email']}");
         return User::create($p);
+    }
+
+    /**
+     * Create device for user
+     */
+    public function createDevice($user_id, $p = array()) {
+        $p = array_merge(array(
+            'user_id' => $user_id,
+            'type'    => Device::IOS,
+            'token'   => $this->faker->md5
+        ), $p);
+
+        return Device::create($p);
     }
 
     public function createUsers($count = self::DEFAULT_BUNCH_SIZE) {
