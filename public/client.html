@@ -54,6 +54,160 @@
             </div>
         </div>
 
+        <div id="docs">
+            <div id="description-login">
+                Create user session
+            </div>
+
+            <div id="description-logout">
+                Destroy user session
+            </div>
+
+            <div id="description-businesses">
+                Get available list of businesses.
+                <hr/>
+                <ul>
+                    <li><b>page</b> - number of page (default 1).</li>
+                    <li><b>rpp</b> - number of records per page (default 20).</li>
+                    <li><b>include_reviews</b>(optional) - if not empty include reviews to the listing."</li>
+                </ul>
+            </div>
+
+            <div id="description-topBusinesses">
+                Get top 10 list of businesses ordered by bookings count.
+            </div>
+
+            <div id="description-checkForUpdates">
+                Check if there were any update since <b>time</b> at business with id <b>business_id</b>. Returns number of updates.
+                <hr/>
+                <ul>
+                    <li><b>business_id</b> - id of business to get number of updates for.</li>
+                    <li><b>time</b> - "since" time (W3C format).</li>
+                </ul>
+            </div>
+
+            <div id="description-productStatus">
+                List of dates when product is not available
+                <hr/>
+                <ul>
+                    <li><b>product_id</b> - id of product.</li>
+                </ul>
+            </div>
+
+            <div id="description-products">
+                Get list of available products.
+                <hr/>
+                <ul>
+                    <li><b>business_id</b>(optional) - if not empty returns only products of specified business.</li>
+                    <li><b>page</b> - number of page (default 1).</li>
+                    <li><b>rpp</b> - number of records per page (default 20).</li>
+                    <li><b>include_bookings</b>(optional) - if not empty include product booking types (booking is combinations of product + duration + price which are available for product).</li>
+                </ul>
+            </div>
+
+            <div id="description-isProductAvailable">
+                Check if product is available at <b>start_time</b> for specified booking. Returns true/false.
+                <hr/>
+                <ul>
+                    <li><b>product_id</b> - id of product.</li>
+                    <li><b>booking_id</b> - id of wanted booking.</li>
+                    <li><b>start_time</b> - time to start specified booking from (W3C format).</li>
+                </ul>
+            </div>
+
+            <div id="description-book">
+                Send request for booking at specified time.
+                <hr/>
+                <ul>
+                    <li><b>booking_id</b> - id of booking.</li>
+                    <li><b>start_time</b> - time to start specified booking from (W3C format).</li>
+                </ul>
+            </div>
+
+            <div id="description-pendingBookings">
+                Get list of pending booking for businesses of currently logged in user.
+            </div>
+
+            <div id="description-approveBooking">
+                Approve specified product booking request (could be applied only by business owner).
+                <hr/>
+                <ul>
+                    <li><b>product_booking_id</b> - id of product booking request.</li>
+                </ul>
+            </div>
+
+            <div id="description-rejectBooking">
+                Reject specified product booking request (could be applied only by business owner).
+                <hr/>
+                <ul>
+                    <li><b>product_booking_id</b> - id of product booking request.</li>
+                </ul>
+            </div>
+
+            <div id="description-cancelBooking">
+                Cancel specified product booking request (could be applied only by request submitter).
+                <hr/>
+                <ul>
+                    <li><b>product_booking_id</b> - id of product booking request.</li>
+                </ul>
+            </div>
+
+            <div id="description-order">
+                Send request for product order.
+                <hr/>
+                <ul>
+                    <li><b>product_id</b> - id of product.</li>
+                </ul>
+            </div>
+
+            <div id="description-pendingOrders">
+                Get list of pending orders for businesses of currently logged in user.
+            </div>
+
+            <div id="description-approveOrder">
+                Approve specified product order request (could be applied only by business owner).
+                <hr/>
+                <ul>
+                    <li><b>product_order_id</b> - id of product order request.</li>
+                </ul>
+            </div>
+
+            <div id="description-rejectOrder">
+                Reject specified product order request (could be applied only by business owner).
+                <hr/>
+                <ul>
+                    <li><b>product_order_id</b> - id of product order request.</li>
+                </ul>
+            </div>
+
+            <div id="description-cancelOrder">
+                Cancel specified product order request (could be applied only by request submitter).
+                <hr/>
+                <ul>
+                    <li><b>product_order_id</b> - id of product order request.</li>
+                </ul>
+            </div>
+
+            <div id="description-addReview">
+                Leave business review.
+                <hr/>
+                <ul>
+                    <li><b>business_id</b> - id of business.</li>
+                    <li><b>title</b> - review title.</li>
+                    <li><b>body</b> - review body.</li>
+                </ul>
+            </div>
+
+            <div id="description-addDevice">
+                Add push notifications subscriber-device for currently logged in user.
+                <hr/>
+                <ul>
+                    <li><b>type</b> - one of the following device types: ios, android, wp8.</li>
+                    <li><b>token</b> - device token.</li>
+                </ul>
+            </div>
+        </div>
+
         <script type="text/template" id="method-list-item-template">
             <a href="#<%= name %>"><i class="icon-chevron-right"></i> <%= name %></a>
         </script>
@@ -65,6 +219,12 @@
                     <input class="param-input input-block-level" type="text" id="<%= param %>" placeholder="<%= param %>">
                 </div>
             <% }); %>
+            <p class="description"></p>
+        </script>
+
+        <script type="text/template" id="method-form-no-params-template">
+            <p>Method doesn't require any params</p>
+            <p class="description"></p>
         </script>
     </body>
 </html>

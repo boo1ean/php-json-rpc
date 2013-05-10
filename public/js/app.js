@@ -13,7 +13,8 @@ window.app = (function($, Backbone, _) {
         defaults: {
             name: "",
             test: false,
-            params: []
+            params: [],
+            description: ""
         }
     });
 
@@ -117,6 +118,7 @@ window.app = (function($, Backbone, _) {
 
     App.views.MethodFormView = Backbone.View.extend({
         template: "#method-form-template",
+        templateNoParams: "#method-form-no-params-template",
         el: "#method-form-view",
 
         events: {
@@ -132,6 +134,8 @@ window.app = (function($, Backbone, _) {
 
         initialize: function() {
             this.template = _.template($(this.template).html())
+            this.templateNoParams = _.template($(this.templateNoParams).html());
+
             this.listenTo(this.model, "change", this.resetRequest);
             this.listenTo(this.model, "change", this.render);
             return this;
@@ -171,11 +175,15 @@ window.app = (function($, Backbone, _) {
         },
 
         render: function() {
+            var description = $("#description-" + this.model.get("name")).html();
+
             if (!this.model.get("params").length) {
-                this.$el.html("Method doesn't require any params");
+                this.$el.html(this.templateNoParams);
             } else {
                 this.$el.html(this.template(this.model.toJSON()));
             }
+
+            this.$el.find(".description").html(description);
             return this;
         }
     });
