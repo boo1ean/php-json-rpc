@@ -200,6 +200,10 @@ window.app = (function($, Backbone, _) {
                 name: "topBusinesses"
             },
 
+            {
+                name: "checkForUpdates",
+                params: ["business_id", "time"]
+            },
 
             {
                 name: "products",

@@ -217,6 +217,13 @@ class Methods
     }
 
     /**
+     * Check for updates since passed date
+     */
+    public function checkForUpdates($p) {
+        return $this->c['business-service']->checkForUpdates($p);
+    }
+
+    /**
      * Get top 10 businesses
      */
     public function topBusinesses() {

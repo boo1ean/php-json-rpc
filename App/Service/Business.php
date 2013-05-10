@@ -3,7 +3,7 @@ namespace App\Service;
 
 use App\Ext\Service;
 use Respect\Validation\Validator as v;
-use App\Model\Business as Model;
+use App\Model\Business as BusinessModel;
 
 class Business extends Service
 {
@@ -15,6 +15,10 @@ class Business extends Service
             'getBusinesses' => array(
                 'rpp'  => v::int()->between(self::MIN_RPP, self::MAX_RPP),
                 'page' => v::int()->positive()
+            ),
+
+            'checkForUpdates' => array(
+                'business_id' => v::notEmpty()->int()->positive()
             )
         );
     }
@@ -26,11 +30,19 @@ class Business extends Service
             $options['include'] = array('reviews');
         }
 
-        $businesses = Model::find('all', $options);
+        $businesses = BusinessModel::find('all', $options);
         return $businesses;
     }
 
     protected function _topBusinesses() {
-        return Model::topByProductBookings();
+        return BusinessModel::topByProductBookings();
+    }
+
+    /**
+     * @param integer $business_id
+     * @param string  $time
+     */
+    protected function _checkForUpdates($p) {
+        return BusinessModel::checkForUpdates($p['business_id'], $p['time']);
     }
 }

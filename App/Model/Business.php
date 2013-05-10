@@ -41,4 +41,28 @@ class Business extends \ActiveRecord\Model
 
         return $conn->query($sql)->fetchAll();
     }
+
+    public static function checkForUpdates($business_id, $time) {
+        $conn = self::connection();
+        $sql = "
+            SELECT
+
+            count(*) as updates_count
+
+            FROM bookings b
+
+            RIGHT JOIN products p
+            ON p.id = b.product_id AND p.business_id = ?
+
+            INNER JOIN businesses biz
+            ON biz.id = p.business_id
+
+            WHERE b.updated_at >= ?
+            OR p.updated_at >= ?
+            OR biz.updated_at >= ?
+        ";
+
+        $params = array($business_id, $time, $time, $time);
+        return $conn->query($sql, $params)->fetch();
+    }
 }

@@ -87,5 +87,27 @@ class BusinessTest extends TestCase
         $this->assertCount(10, $reviews);
     }
 
-    // TODO tests for top
+    public function testCheckForUpdates() {
+        $user     = $this->createUser();
+        $business = $this->createBusiness($user->id);
+
+        $time = new DateTime('NOW');
+        $p = array(
+            'time'        => $time->format($this->container['config']['date_format']),
+            'business_id' => $business->id
+        );
+
+        $result = $this->container['business-service']->checkForUpdates($p);
+        $this->assertEquals(0, $result['updates_count']);
+
+        $this->createProducts($business->id, 2);
+        $result = $this->container['business-service']->checkForUpdates($p);
+        $this->assertEquals(2, $result['updates_count']);
+
+        $time->modify('+1 second');
+        $p['time'] = $time->format($this->container['config']['date_format']);
+        $result = $this->container['business-service']->checkForUpdates($p);
+        $this->assertEquals(0, $result['updates_count']);
+    }
+
 }

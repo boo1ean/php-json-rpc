@@ -194,6 +194,32 @@ class MethodsTest extends TestCase
         $this->assertEquals($device->user_id, $user->id);
     }
 
+    public function testCheckForUpdates() {
+        $user = $this->createUser();
+        $business = $this->createBusiness($user->id);
+        $time = new \DateTime('NOW');
+
+        $params = array(
+            'business_id' => $business->id,
+            'time'        => $time->format($this->container['config']['date_format'])
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'checkForUpdates',
+            'params' => $params
+        ));
+
+        $this->createProducts($business->id, 3);
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+
+        $updatesCount = $response->result->updates_count;
+        $this->assertEquals(3, $updatesCount);
+    }
+
     public function testAddDeviceUnauthorized() {
         $user = $this->createUser();
 
