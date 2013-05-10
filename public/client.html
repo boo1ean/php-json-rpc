@@ -52,9 +52,14 @@
                     <div class="well span5 json-view" id="response-view">Response:<pre><code></code></pre></div>
                 </div>
             </div>
+
+            <br/>
+            <p>
+                *booking is a combination of product + duration + price
+            </p>
         </div>
 
-        <div id="docs">
+        <div id="docs" class="hide">
             <div id="description-login">
                 Create user session
             </div>
@@ -101,7 +106,7 @@
                     <li><b>business_id</b>(optional) - if not empty returns only products of specified business.</li>
                     <li><b>page</b> - number of page (default 1).</li>
                     <li><b>rpp</b> - number of records per page (default 20).</li>
-                    <li><b>include_bookings</b>(optional) - if not empty include product booking types (booking is combinations of product + duration + price which are available for product).</li>
+                    <li><b>include_bookings</b>(optional) - if not empty include product booking types (booking is a combination of product + duration + price).</li>
                 </ul>
             </div>
 
