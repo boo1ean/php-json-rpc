@@ -207,11 +207,6 @@ window.app = (function($, Backbone, _) {
             },
 
             {
-                name: "book",
-                params: ["booking_id", "start_time"]
-            },
-
-            {
                 name: "productStatus",
                 params: ["product_id"]
             },
@@ -222,11 +217,12 @@ window.app = (function($, Backbone, _) {
             },
 
             {
-                name: "pendingBookings"
+                name: "book",
+                params: ["booking_id", "start_time"]
             },
 
             {
-                name: "pendingOrders"
+                name: "pendingBookings"
             },
 
             {
@@ -237,6 +233,20 @@ window.app = (function($, Backbone, _) {
             {
                 name: "rejectBooking",
                 params: ["product_booking_id"]
+            },
+
+            {
+                name: "cancelBooking",
+                params: ["product_booking_id"]
+            },
+
+            {
+                name: "order",
+                params: ["product_id"]
+            },
+
+            {
+                name: "pendingOrders"
             },
 
             {
@@ -255,19 +265,25 @@ window.app = (function($, Backbone, _) {
             },
 
             {
-                name: "cancelBooking",
-                params: ["product_booking_id"]
+                name: "addReview",
+                params: ["business_id", "title", "body"]
             },
 
             {
-                name: "addReview",
-                params: ["business_id", "title", "body"]
+                name: "addDevice",
+                params: ["type", "token"]
             },
 
             {
                 name: "createUser",
                 test: true,
                 params: ["email", "password", "first_name", "last_name", "phone_number", "country", "city", "address"]
+            },
+
+            {
+                name: "createDevice",
+                test: true,
+                params: ["user_id", "type", "token"]
             },
 
             {

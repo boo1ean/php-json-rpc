@@ -50,6 +50,7 @@ class Application
 
         $this->setupDb();
         $this->setupContainer();
+        $this->setupEvents();
         return $this;
     }
 
@@ -160,7 +161,48 @@ class Application
                 'message' => json_encode($productBooking->attributes())
             );
 
-            //$c['push-service']->notify($p);
+            $c['push-service']->notify($p);
+        });
+
+        $this->c['vent']->on('Order.requestOrder.success', function($c, $p, $order) {
+            $owner = $order->product->business->user;
+
+            $p = array(
+                'user_id' => $owner->id,
+                'message' => json_encode($order->attributes())
+            );
+
+            $c['push-service']->notify($p);
+        });
+
+        $this->c['vent']->on('Booking.setStatus.success', function($c, $p, $productBooking) {
+            if ($productBooking->status == \App\Model\ProductBooking::CANCELED) {
+                return;
+            }
+
+            $customer = $productBooking->user;
+
+            $p = array(
+                'user_id' => $customer->id,
+                'message' => json_encode($productBooking->attributes())
+            );
+
+            $c['push-service']->notify($p);
+        });
+
+        $this->c['vent']->on('Order.setOrderStatus.success', function($c, $p, $order) {
+            if ($order->status == \App\Model\ProductOrder::CANCELED) {
+                return;
+            }
+
+            $customer = $order->user;
+
+            $p = array(
+                'user_id' => $customer->id,
+                'message' => json_encode($order->attributes())
+            );
+
+            $c['push-service']->notify($p);
         });
     }
 }

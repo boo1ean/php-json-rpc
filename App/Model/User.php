@@ -49,7 +49,8 @@ class User extends \ActiveRecord\Model
             p.id as product_id,
             b.duration,
             b.price,
-            pb.id as product_booking_id
+            pb.id as product_booking_id,
+            pb.created_at
 
             FROM product_bookings pb
 
@@ -80,7 +81,8 @@ class User extends \ActiveRecord\Model
             p.name as product_name,
             p.id as product_id,
             p.price,
-            po.id as product_order_id
+            po.id as product_order_id,
+            po.created_at
 
             FROM product_orders po
 
