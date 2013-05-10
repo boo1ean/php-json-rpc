@@ -50,7 +50,7 @@ class Application
 
         $this->setupDb();
         $this->setupContainer();
-        $this->setupEvents();
+        //$this->setupEvents();
         return $this;
     }
 

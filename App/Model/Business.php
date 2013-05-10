@@ -30,7 +30,7 @@ class Business extends \ActiveRecord\Model
             INNER JOIN products p
             ON p.id = b.product_id
 
-            INNER JOIN businesses biz
+            RIGHT JOIN businesses biz
             ON biz.id = p.business_id
 
 
