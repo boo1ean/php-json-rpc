@@ -150,4 +150,17 @@ class Application
             return new \App\Service\Push($c);
         });
     }
+
+    protected function setupEvents() {
+        $this->c['vent']->on('Booking.requestBooking.success', function($c, $p, $productBooking) {
+            $owner = $productBooking->booking->product->business->user;
+
+            $p = array(
+                'user_id' => $owner->id,
+                'message' => json_encode($productBooking->attributes())
+            );
+
+            //$c['push-service']->notify($p);
+        });
+    }
 }

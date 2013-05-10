@@ -169,6 +169,51 @@ class MethodsTest extends TestCase
         $this->assertCount($bookingsCount, $bookings);
     }
 
+    public function testAddDevice() {
+        $user = $this->createUser();
+
+        $type = App\Model\Device::IOS;
+        $params = array(
+            'type'  => $type,
+            'token' => $this->faker->md5
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'addDevice',
+            'params' => $params
+        ));
+
+        $this->container['user'] = $user;
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('result', $response);
+        $device = $response->result;
+        $this->assertEquals($device->type, $type);
+        $this->assertEquals($device->user_id, $user->id);
+    }
+
+    public function testAddDeviceUnauthorized() {
+        $user = $this->createUser();
+
+        $type = App\Model\Device::IOS;
+        $params = array(
+            'type'  => $type,
+            'token' => $this->faker->md5
+        );
+
+        $request = $this->composeRequest(array(
+            'method' => 'addDevice',
+            'params' => $params
+        ));
+
+        $response = $this->server->handleRequest($request);
+        $response = json_decode($response);
+
+        $this->assertObjectHasAttribute('error', $response);
+    }
+
     public function testAddReview() {
         $bookingsCount = 12;
         $user     = $this->createUser();
@@ -488,9 +533,10 @@ class MethodsTest extends TestCase
         $this->assertTrue(is_callable(array($method, 'rejectOrder')));
         $this->assertTrue(is_callable(array($method, 'cancelBooking')));
         $this->assertTrue(is_callable(array($method, 'cancelOrder')));
+        $this->assertTrue(is_callable(array($method, 'addDevice')));
 
         $this->assertFalse(is_callable(array($method, 'prepare')));
-        $this->assertFalse(is_callable(array($method, 'checkSession')));
+        $this->assertFalse(is_callable(array($method, 'populateUserId')));
     }
 
     public function testApproveBooking() {

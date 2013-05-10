@@ -33,4 +33,63 @@ class UserTest extends TestCase
         $this->container['user-service']->logout();
         $this->assertNull($this->container['auth-service']->getIdentity());
     }
+
+    public function testAddDevice() {
+        $user = $this->createUser();
+        $type = App\Model\Device::IOS;
+        $p = array(
+            'user_id' => $user->id,
+            'type'    => $type,
+            'token'   => $this->faker->md5
+        );
+
+        $device = $this->container['user-service']->addDevice($p);
+
+        $this->assertNotEmpty($device);
+        $this->assertEquals($type, $device->type);
+        $this->assertEquals($user->id, $device->user_id);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testAddDeviceInvalidUserId() {
+        $type = App\Model\Device::IOS;
+        $p = array(
+            'user_id' => 131231,
+            'type'    => $type,
+            'token'   => $this->faker->md5
+        );
+
+        $device = $this->container['user-service']->addDevice($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testAddDeviceInvalidType() {
+        $user = $this->createUser();
+
+        $p = array(
+            'user_id' => $user->id,
+            'type'    => 'qwerty',
+            'token'   => $this->faker->md5
+        );
+
+        $device = $this->container['user-service']->addDevice($p);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testAddDeviceNoToken() {
+        $user = $this->createUser();
+
+        $p = array(
+            'user_id' => $user->id,
+            'type'    => App\Model\Device::IOS
+        );
+
+        $device = $this->container['user-service']->addDevice($p);
+    }
 }

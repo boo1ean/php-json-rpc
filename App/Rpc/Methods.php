@@ -12,17 +12,6 @@ class Methods
      */
     public function __construct($c) {
         $this->c = $c;
-
-        $this->c['vent']->on('Booking.requestBooking.success', function($c, $p, $productBooking) {
-            $owner = $productBooking->booking->product->business->user;
-
-            $p = array(
-                'user_id' => $owner->id,
-                'message' => json_encode($productBooking->attributes())
-            );
-
-            //$c['push-service']->notify($p);
-        });
     }
 
     public function login($p = array()) {
@@ -213,6 +202,11 @@ class Methods
         return $this->c['booking-service']->setBookingStatus($p)->attributes();
     }
 
+    public function addDevice($p) {
+        $p = $this->populateUserId($p);
+        return $this->c['user-service']->addDevice($p)->attributes();
+    }
+
     /**
      * Cancel order request
      */
@@ -254,6 +248,7 @@ class Methods
         return $p;
     }
 
+    // For test purposes
     // @codeCoverageIgnoreStart
     public function createUser($p) {
         return \App\Model\User::create($p)->attributes();
@@ -277,5 +272,9 @@ class Methods
 
     public function createReview($p) {
         return \App\Model\Review::create($p)->attributes();
+    }
+
+    public function createDevice($p) {
+        return \App\Model\Device::create($p)->attributes();
     }
 }
