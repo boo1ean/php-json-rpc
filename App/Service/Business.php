@@ -18,11 +18,19 @@ class Business extends Service
             ),
 
             'checkForUpdates' => array(
-                'business_id' => v::notEmpty()->int()->positive()
+                'business_id' => v::notEmpty()->int()->positive(),
+                'time'        => v::notEmpty()
             )
         );
     }
 
+    /**
+     * Get list of businesses
+     *
+     * @param integer $rpp number of records per page
+     * @param integer $page page number
+     * @return array collection of businesses
+     */
     protected function _getBusinesses($p) {
         $options = $this->pagination($p);
 
@@ -40,7 +48,7 @@ class Business extends Service
 
     /**
      * @param integer $business_id
-     * @param string  $time
+     * @param string  $time W3C format
      */
     protected function _checkForUpdates($p) {
         return BusinessModel::checkForUpdates($p['business_id'], $p['time']);

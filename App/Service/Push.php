@@ -20,6 +20,12 @@ class Push extends Service
         );
     }
 
+    /**
+     * Send push notification to devices of specified user
+     *
+     * @param integer $user_id reciever id
+     * @param string  $message
+     */
     protected function _notify($p) {
         try {
             $user = UserModel::find($p['user_id']);

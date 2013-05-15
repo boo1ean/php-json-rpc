@@ -39,6 +39,8 @@ class Product extends Service
      * Get list of product for specific business
      *
      * @param integer $business_id
+     * @param integer $rpp number of records per page
+     * @param integer $page page number
      * @return array collection of product
      */
     protected function _getProducts($p) {
@@ -80,6 +82,9 @@ class Product extends Service
      * Check is product with specified id is available
      *
      * @param integer $product_id
+     * @param integer $booking_id
+     * @param string  $start_time W3C format
+     *
      * @return bool availability status
      */
     protected function _isProductAvailable($p) {
