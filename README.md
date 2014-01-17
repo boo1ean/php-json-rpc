@@ -1,12 +1,14 @@
 Play
 ----
 
-You can play with json rpc test client here [rpc.7-bit.co/client.html](http://rpc.7-bit.co/client.html)
-There are testing purpose methods at the left bottom which create db records omitting validatiom, so `you can create user then log in and then play with other methods`.
+You can play with json rpc test client here [rpc.7-bit.co/client.html](http://rpc.7-bit.co/client.html).   
+
+There are testing purpose methods at the left bottom which create db records omitting validatiom,   
+so `you can create user then log in and then play with other methods`.
 
 Setup
 -----
-1. Add virtual host to httpd config:
+1. Add virtual host to httpd config (if you are using apache otherwise you know what to do):
 
     ```ApacheConf
     <VirtualHost *:80>
