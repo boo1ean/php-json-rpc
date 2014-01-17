@@ -15,7 +15,7 @@ Setup
     </VirtualHost>
     ```
 
-2. Run schema.sql to create db schema.
+2. Run db/schema.sql to create db schema.
 3. Install [composer](http://getcomposer.org/) and necessary dependencies (from project root dir):
 
     ```
@@ -28,3 +28,5 @@ Setup
     ```
     bower install
     ```
+
+5. Run server and access client at `/client.html`
