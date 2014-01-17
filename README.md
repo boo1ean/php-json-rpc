@@ -1,3 +1,36 @@
+What's inside
+-------------
+
+Server:
+
+- JSON-RPC server - http://evilscott.github.io/junior/
+- Active record implementation - http://www.phpactiverecord.org/
+- Simple DI container - http://pimple.sensiolabs.org/
+- Validation framework - http://documentup.com/Respect/Validation/
+- Event emitter - https://github.com/igorw/evenement
+- Testing + coverage - http://phpunit.de/
+- Class loader - http://symfony.com/doc/current/components/class_loader
+- Zend_Auth + Zend_Session - http://framework.zend.com/manual/1.12/en/zend.auth.html
+
+Client:
+
+- jquery
+- underscore
+- backbone
+- bootstrap
+- highlightjs
+
+Server's code has 100% test coverage you can run tests using:
+
+    test/coverage
+    
+(You need to install xdebug extension for code coverage)
+
+About
+-----
+
+Project is a json-rpc api server for mobile apps for car business application where you can book/order car, view available cars/business, leave review, subscribe for push notification and so on.
+
 Play
 ----
 
