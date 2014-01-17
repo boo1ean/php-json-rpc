@@ -1,9 +1,6 @@
-DROP DATABASE `car_business`;
 CREATE DATABASE `car_business`;
 
 USE `car_business`;
-
-DROP USER 'car_business'@'localhost';
 
 CREATE
     USER 'car_business'@'localhost'
